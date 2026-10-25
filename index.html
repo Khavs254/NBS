@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Naomi Beauty Shop — Records</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F7F4F6;--surface:#FFFFFF;--surface2:#F2ECF0;--ink:#2A1F29;--muted:#74667A;--line:#E5DBE2;
+  --plum:#4A2142;--plum-ink:#F6E9F1;--berry:#A3245F;--berry-ink:#FFFFFF;--berry-soft:#F8E4ED;
+  --ok:#2F7D59;--ok-soft:#E3F2EA;--warn:#A86A12;--warn-soft:#FBF0DC;--bad:#B42318;--bad-soft:#FBE6E4;
+  --r-sm:6px;--r:10px;--r-lg:16px;
+  --font:'Figtree',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --display:'Fraunces',Georgia,'Times New Roman',serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#17111A;--surface:#211A24;--surface2:#2A212D;--ink:#F2EAF0;--muted:#A99BAA;--line:#3A2F3D;
+    --plum:#100B12;--plum-ink:#F2E3EC;--berry:#E0659B;--berry-ink:#1A0E14;--berry-soft:#3A1D2C;
+    --ok:#5CC08F;--ok-soft:#173226;--warn:#E3A84B;--warn-soft:#352812;--bad:#F07D72;--bad-soft:#3A1916;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#17111A;--surface:#211A24;--surface2:#2A212D;--ink:#F2EAF0;--muted:#A99BAA;--line:#3A2F3D;
+  --plum:#100B12;--plum-ink:#F2E3EC;--berry:#E0659B;--berry-ink:#1A0E14;--berry-soft:#3A1D2C;
+  --ok:#5CC08F;--ok-soft:#173226;--warn:#E3A84B;--warn-soft:#352812;--bad:#F07D72;--bad-soft:#3A1916;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--font);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--berry);outline-offset:2px}
+.app{display:grid;grid-template-columns:232px 1fr;min-height:100%}
+/* Sidebar */
+.side{background:var(--plum);color:var(--plum-ink);padding:22px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;overflow:auto}
+.brand{padding:0 10px 18px}
+.brand h1{font-family:var(--display);font-weight:600;font-size:26px;line-height:1.05;margin:0;letter-spacing:-.01em}
+.brand p{margin:6px 0 0;font-size:13px;opacity:.7}
+.nav button{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:0;color:inherit;padding:9px 12px;border-radius:var(--r-sm);cursor:pointer;font-weight:500;opacity:.82}
+.nav button:hover{background:rgba(255,255,255,.07);opacity:1}
+.nav button.on{background:rgba(255,255,255,.13);opacity:1}
+.nav svg{width:18px;height:18px;flex:none}
+.save-box{margin-top:auto;padding:12px;border-radius:var(--r);background:rgba(255,255,255,.06);font-size:12.5px;line-height:1.45}
+.save-box b{display:block;font-size:13px;margin-bottom:2px}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:#7BD3A4;vertical-align:middle}
+.dot.warn{background:#F2B85B}.dot.bad{background:#F07D72}.dot.off{background:#9A8C9C}
+/* Main */
+.main{padding:26px 30px 60px;min-width:0}
+.head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.head h2{margin:0;font-size:24px;font-weight:700;letter-spacing:-.01em}
+.head p{margin:2px 0 0;color:var(--muted)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.grow{flex:1}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.panel h3{margin:0 0 12px;font-size:16px}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.stat{padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r)}
+.stat span{color:var(--muted);font-size:13px}
+.stat strong{display:block;font-size:22px;font-weight:700;margin-top:2px;font-variant-numeric:tabular-nums}
+.stat small{color:var(--muted)}
+.today{background:var(--berry);color:var(--berry-ink);border-radius:var(--r-lg);padding:22px 24px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:flex-end}
+.today .big{font-family:var(--display);font-size:44px;line-height:1;font-weight:600;font-variant-numeric:tabular-nums}
+.today p{margin:0 0 6px;opacity:.85}
+.today .mini{display:flex;gap:26px;flex-wrap:wrap}
+.today .mini div{font-size:13px;opacity:.9}
+.today .mini b{display:block;font-size:18px}
+/* Buttons & inputs */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:1px solid var(--line);background:var(--surface);padding:8px 14px;border-radius:var(--r-sm);cursor:pointer;font-weight:600;font-size:14px;white-space:nowrap}
+.btn:hover{border-color:var(--muted)}
+.btn.pri{background:var(--berry);border-color:var(--berry);color:var(--berry-ink)}
+.btn.pri:hover{filter:brightness(1.07)}
+.btn.ghost{background:none;border-color:transparent}
+.btn.ghost:hover{background:var(--surface2)}
+.btn.danger{color:var(--bad)}
+.btn.sm{padding:5px 10px;font-size:13px}
+.btn.lg{padding:12px 18px;font-size:16px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted);font-weight:500}
+input.i,select.i,textarea.i{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:8px 10px;width:100%;color:var(--ink);font-size:14.5px}
+textarea.i{min-height:70px;resize:vertical}
+input.i:focus,select.i:focus,textarea.i:focus{outline:none;border-color:var(--berry);box-shadow:0 0 0 3px var(--berry-soft)}
+.fg{display:grid;gap:12px;grid-template-columns:repeat(2,minmax(0,1fr))}
+.fg .full{grid-column:1/-1}
+/* Tables */
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:var(--r);background:var(--surface)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-size:12.5px;color:var(--muted);font-weight:600;background:var(--surface2);white-space:nowrap}
+tr:last-child td{border-bottom:0}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tbody tr:hover{background:var(--surface2)}
+.empty{padding:34px;text-align:center;color:var(--muted)}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:600;background:var(--surface2);color:var(--muted)}
+.tag.ok{background:var(--ok-soft);color:var(--ok)}.tag.warn{background:var(--warn-soft);color:var(--warn)}.tag.bad{background:var(--bad-soft);color:var(--bad)}.tag.pri{background:var(--berry-soft);color:var(--berry)}
+.muted{color:var(--muted)}.okc{color:var(--ok)}.badc{color:var(--bad)}.warnc{color:var(--warn)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;cursor:pointer;font-size:13px;font-weight:500}
+.chip.on{background:var(--ink);color:var(--surface);border-color:var(--ink)}
+/* POS */
+.pos{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;align-items:start}
+.prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:14px}
+.pc{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px;cursor:pointer;text-align:left;display:flex;flex-direction:column;gap:4px;min-height:96px}
+.pc:hover{border-color:var(--berry)}
+.pc b{font-weight:600;line-height:1.25}
+.pc .p{margin-top:auto;font-weight:700;color:var(--berry);font-variant-numeric:tabular-nums}
+.pc small{color:var(--muted);font-size:12px}
+.pc.low small{color:var(--warn)}.pc.out small{color:var(--bad)}
+.cart{position:sticky;top:20px}
+.cl{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.cl .nm{font-weight:600}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:var(--r-sm)}
+.qty button{border:0;background:none;width:28px;height:28px;cursor:pointer;font-size:16px}
+.qty input{width:46px;border:0;text-align:center;background:none;padding:0}
+.pin{width:92px;border:1px solid var(--line);border-radius:var(--r-sm);padding:3px 6px;text-align:right;background:var(--surface)}
+.tot{display:flex;justify-content:space-between;padding:4px 0;font-variant-numeric:tabular-nums}
+.tot span:last-child{white-space:nowrap}
+a{color:var(--berry)}
+.tot.g{font-size:20px;font-weight:700;padding-top:8px}
+.pay{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pay button{border:1px solid var(--line);background:var(--surface);border-radius:var(--r-sm);padding:8px 4px;cursor:pointer;font-weight:600;font-size:13px}
+.pay button.on{border-color:var(--berry);background:var(--berry-soft);color:var(--berry)}
+/* Bars */
+.bars{display:flex;align-items:flex-end;gap:5px;height:150px;padding-top:10px}
+.bars div{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;min-width:0}
+.bars i{display:block;width:100%;background:var(--berry);border-radius:4px 4px 0 0;min-height:2px;opacity:.85}
+.bars div.t i{opacity:1}
+.bars small{font-size:10.5px;color:var(--muted);white-space:nowrap}
+.hbar{height:8px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-top:4px}
+.hbar i{display:block;height:100%;background:var(--berry)}
+/* Modal */
+.ov{position:fixed;inset:0;background:rgba(20,10,18,.5);display:flex;align-items:flex-start;justify-content:center;padding:5vh 16px;z-index:50;overflow:auto}
+.md{background:var(--surface);border-radius:var(--r-lg);width:100%;max-width:560px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.md.wide{max-width:860px}
+.md h3{margin:0 0 4px;font-size:19px}
+.md .sub{color:var(--muted);margin:0 0 16px}
+.md .acts{display:flex;justify-content:flex-end;gap:8px;margin-top:18px;flex-wrap:wrap}
+.toast{position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 18px;border-radius:999px;font-weight:600;z-index:80;box-shadow:0 8px 30px rgba(0,0,0,.25);max-width:90vw;text-align:center}
+.alert{padding:12px 14px;border-radius:var(--r);margin-bottom:14px;font-size:14px}
+.alert.warn{background:var(--warn-soft);color:var(--warn)}
+.alert.bad{background:var(--bad-soft);color:var(--bad)}
+.alert.ok{background:var(--ok-soft);color:var(--ok)}
+pre.code{background:var(--surface2);border:1px solid var(--line);border-radius:var(--r-sm);padding:12px;overflow:auto;font-size:12.5px;line-height:1.5;white-space:pre}
+.sep{height:1px;background:var(--line);margin:16px 0}
+.list-line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}
+.list-line:last-child{border-bottom:0}
+#print{display:none}
+@media (max-width:1100px){.pos{grid-template-columns:1fr}.cart{position:static}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{position:sticky;top:0;height:auto;flex-direction:row;align-items:center;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top,0px));overflow-x:auto;z-index:20;gap:6px}
+  .brand{padding:0 8px 0 0;flex:none}.brand h1{font-size:18px}.brand p{display:none}
+  .nav{display:flex;gap:2px}.nav button{white-space:nowrap;padding:8px 10px}.nav button span{display:none}.nav button.on span{display:inline}
+  .save-box{margin:0;flex:none;padding:6px 10px}.save-box small{display:none}
+  .main{padding:18px 14px 70px}
+  .g2,.g3,.fg{grid-template-columns:1fr}
+  .today .big{font-size:36px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{
+  @page{margin:10mm}
+  body{background:#fff;color:#000}
+  .app,.ov,.toast{display:none!important}
+  #print{display:block!important;font:12px/1.4 Arial,sans-serif;color:#000}
+  #print.receipt{width:72mm;margin:0 auto;font-size:11.5px}
+  #print table{font-size:inherit}#print th,#print td{border-color:#ccc;padding:5px 6px;background:none;color:#000}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><h1 id="brandName">Naomi Beauty Shop</h1><p id="brandLoc">Githiga</p></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="save-box" id="saveBox"></div>
+  </aside>
+  <main class="main" id="main"></main>
+</div>
+<div id="modalRoot"></div>
+<div id="print"></div>
+<script>
+/* ============ Naomi Beauty Shop — records app ============
+   Data lives in one object (S). Every change is written to this
+   computer immediately, again on a timer, and synced to Supabase. */
+const KEY='naomiShop.data.v1', CLOUD_KEY='naomiShop.cloud.v1';
+const DEFAULT_URL='https://xschfdgrlbgcouqaepsp.supabase.co', DEFAULT_KEY='sb_publishable_4aeaSsBVJU8f_F_0H0GpGg_2-CQU-bC';
+const ICONS={
+ dash:'<path d="M3 13h8V3H3zM13 21h8v-8h-8zM3 21h8v-6H3zM13 3v8h8V3z"/>',
+ sell:'<path d="M6 6h15l-1.5 9h-12zM6 6 5 3H2"/><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/>',
+ sales:'<path d="M6 2h9l5 5v15H6zM14 2v6h6M9 13h8M9 17h8"/>',
+ prod:'<path d="M3 7l9-4 9 4-9 4zM3 7v10l9 4 9-4V7M12 11v10"/>',
+ buy:'<path d="M4 4h16v4H4zM6 8v12h12V8M10 12h4"/>',
+ exp:'<path d="M3 6h18v12H3zM3 10h18M7 15h3"/>',
+ cust:'<circle cx="9" cy="8" r="4"/><path d="M2 21c0-4 3-6 7-6s7 2 7 6M16 4a4 4 0 0 1 0 8M22 21c0-3-2-5-4-6"/>',
+ supp:'<path d="M1 7h13v10H1zM14 10h4l4 4v3h-8M5 20a2 2 0 1 0 0-.1M18 20a2 2 0 1 0 0-.1"/>',
+ rep:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+ set:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>'
+};
+const NAV=[['dash','Dashboard'],['sell','Sell'],['sales','Sales & invoices'],['prod','Products & stock'],['buy','Purchases'],['exp','Expenses'],['cust','Customers'],['supp','Suppliers'],['rep','Reports'],['set','Settings & backup']];
+const METHODS=['Cash','M-Pesa','Card','Bank'];
+
+/* ---------- helpers ---------- */
+const $=s=>document.querySelector(s);
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num=v=>{const n=parseFloat(String(v).replace(/,/g,''));return isFinite(n)?n:0};
+const r2=n=>Math.round((+n||0)*100)/100;
+const fmt=n=>(+n||0).toLocaleString('en-KE',{minimumFractionDigits:2,maximumFractionDigits:2});
+const money=n=>(S?.settings?.currency||'KES')+' '+fmt(n);
+const qf=n=>(+n||0).toLocaleString('en-KE',{maximumFractionDigits:2});
+const dISO=d=>{const z=new Date(d.getTime()-d.getTimezoneOffset()*60000);return z.toISOString().slice(0,10)};
+const today=()=>dISO(new Date());
+const nowTime=()=>new Date().toTimeString().slice(0,5);
+const addDays=(iso,n)=>{const d=new Date(iso+'T12:00:00');d.setDate(d.getDate()+n);return dISO(d)};
+const niceDate=iso=>iso?new Date(iso+'T12:00:00').toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):'';
+const ago=t=>{if(!t)return 'never';const s=(Date.now()-t)/1000;if(s<10)return 'just now';if(s<60)return Math.floor(s)+' sec ago';if(s<3600)return Math.floor(s/60)+' min ago';if(s<86400)return Math.floor(s/3600)+' hr ago';return new Date(t).toLocaleString('en-GB')};
+function toast(msg,ms=2600){document.querySelectorAll('.toast').forEach(x=>x.remove());const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),ms)}
+
+/* ---------- data model ---------- */
+function blank(){
+ return {
+  settings:{shopName:'Naomi Beauty Shop',location:'Githiga',phone:'',email:'',kraPin:'',currency:'KES',
+   receiptFooter:'Thank you for shopping with us!',invoiceTerms:'Payment due within 14 days.',autosaveMin:5,allowNegative:true},
+  categories:['Hair products','Beauty & skin care','Perfumes','Shoes','Eggs','Other'],
+  expenseCats:['Rent','Electricity','Water','Transport','Salaries','Airtime & data','Licences & permits','Packaging','Repairs','Other'],
+  products:[],customers:[],suppliers:[],sales:[],purchases:[],expenses:[],moves:[],
+  counters:{receipt:1,invoice:1,purchase:1},
+  meta:{rev:0,updatedAt:null,created:new Date().toISOString()}
+ };
+}
+let S, cloud, lastLocalSave=0, unsyncedSince=null;
+function loadLocal(){
+ try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}
+ const b=blank();
+ if(!S||typeof S!=='object')S=b;
+ for(const k in b) if(S[k]===undefined) S[k]=b[k];
+ S.settings={...b.settings,...S.settings};S.counters={...b.counters,...S.counters};S.meta={...b.meta,...S.meta};
+ try{cloud=JSON.parse(localStorage.getItem(CLOUD_KEY))}catch(e){cloud=null}
+ cloud={url:'',key:'',shopId:'naomi-beauty-githiga',auto:true,everyMin:5,syncedRev:0,lastSync:0,lastError:'',dirty:false,...(cloud||{})};
+ if(!cloud.url)cloud.url=DEFAULT_URL; if(!cloud.key)cloud.key=DEFAULT_KEY;
+}
+function saveLocal(silent){
+ try{
+  localStorage.setItem(KEY,JSON.stringify(S));
+  localStorage.setItem(CLOUD_KEY,JSON.stringify(cloud));
+  lastLocalSave=Date.now();
+ }catch(e){
+  if(!silent) toast('This computer’s storage is full. Export a backup in Settings and turn on cloud sync.',6000);
+ }
+ renderSaveBox();
+}
+/* every change goes through commit(): bump revision, save now, mark for cloud */
+function commit(){
+ S.meta.rev++;S.meta.updatedAt=new Date().toISOString();
+ cloud.dirty=true;if(!unsyncedSince)unsyncedSince=Date.now();
+ saveLocal();scheduleCloud();
+}
+const hasData=d=>d&&((d.products||[]).length+(d.sales||[]).length+(d.expenses||[]).length+(d.customers||[]).length+(d.purchases||[]).length)>0;
+
+/* ---------- Supabase cloud sync ----------
+   Safety rules (so an old or fresh copy of this file never wipes the cloud):
+   1. Never push without first reading the cloud row.
+   2. If the cloud changed since this computer last synced, stop and ask.
+   3. A computer with no records always loads the cloud copy instead of pushing.
+   4. Every push also keeps a dated snapshot (one per day) you can restore. */
+let syncing=false, cloudTimer=null;
+const cloudOn=()=>!!(cloud.url&&cloud.key&&cloud.shopId);
+async function sb(path,opts={}){
+ const base=cloud.url.trim().replace(/\/+$/,''),k=cloud.key.trim();
+ const h={apikey:k,'Content-Type':'application/json',...(opts.headers||{})};
+ if(k.startsWith('eyJ'))h.Authorization='Bearer '+k; // legacy anon JWT key
+ let r;
+ try{r=await fetch(base+'/rest/v1/'+path,{...opts,headers:h})}
+ catch(e){throw new Error('Cannot reach Supabase — check the internet connection and the project URL.')}
+ if(!r.ok){
+  let t='',code='';try{const j=await r.json();t=j.message||j.msg||'';code=j.code||''}catch(e){}
+  if(r.status===401||/api key|apikey|jwt/i.test(t))throw new Error('Supabase rejected the key — copy the publishable (or anon) key again from Project Settings → API Keys.');
+  if(code==='42P01'||code==='PGRST205'||/does not exist|could not find the table/i.test(t))throw new Error('The tables were not found — run the setup SQL in the Supabase SQL Editor.');
+  if(code==='42501'||/row-level security/i.test(t))throw new Error('Supabase blocked the write — the access policies from the setup SQL are missing.');
+  throw new Error(t||('Cloud error '+r.status));
+ }
+ return r;
+}
+async function testCloud(){
+ const steps=[];const add=(ok,txt)=>steps.push(`<div class="list-line"><span>${txt}</span><span class="tag ${ok?'ok':'bad'}">${ok?'Working':'Failed'}</span></div>`);
+ const show=()=>{closeAll();modal(`<h3>Cloud connection test</h3><p class="sub">${esc(cloud.url)}</p>${steps.join('')}<div class="acts"><button class="btn" onclick="closeModal()">Close</button></div>`)};
+ const tid='__connection_test__';
+ try{await sb('shop_data?select=id&limit=1');add(true,'Reach Supabase and read the records table')}catch(e){add(false,esc(e.message));return show()}
+ try{await sb('shop_data',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},body:JSON.stringify({id:tid,rev:0,data:{test:true}})});add(true,'Save to the records table')}catch(e){add(false,esc(e.message));return show()}
+ try{const r=await sb('shop_data?id=eq.'+tid+'&select=id');const a=await r.json();add(a.length===1,'Read back what was saved')}catch(e){add(false,esc(e.message))}
+ try{await sb('shop_data?id=eq.'+tid,{method:'DELETE'});add(true,'Remove the test record')}catch(e){add(false,esc(e.message))}
+ try{await sb('shop_snapshots?select=id&limit=1');add(true,'Read the snapshots table')}catch(e){add(false,esc(e.message))}
+ show();
+}
+async function cloudGet(){const r=await sb('shop_data?id=eq.'+encodeURIComponent(cloud.shopId)+'&select=id,rev,updated_at,data');const a=await r.json();return a[0]||null}
+async function snapshot(data,tag){
+ const day=today();
+ await sb('shop_snapshots',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+  body:JSON.stringify({id:cloud.shopId+'_'+(tag||day),shop_id:cloud.shopId,day,data})});
+}
+async function pushNow(remote){
+ const rev=((remote&&remote.rev)||0)+1;
+ await sb('shop_data',{method:'POST',headers:{Prefer:'resolution=merge-duplicates,return=minimal'},
+  body:JSON.stringify({id:cloud.shopId,rev,data:S,updated_at:new Date().toISOString()})});
+ try{await snapshot(S)}catch(e){}
+ cloud.syncedRev=rev;cloud.dirty=false;unsyncedSince=null;cloud.lastSync=Date.now();cloud.lastError='';
+ saveLocal(true);
+}
+function applyRemote(remote){
+ S=remote.data;loadFix();cloud.syncedRev=remote.rev;cloud.dirty=false;unsyncedSince=null;cloud.lastSync=Date.now();cloud.lastError='';
+ saveLocal(true);render();
+}
+function loadFix(){const b=blank();for(const k in b) if(S[k]===undefined) S[k]=b[k];S.settings={...b.settings,...S.settings};S.counters={...b.counters,...S.counters};S.meta={...b.meta,...S.meta}}
+async function syncCloud(manual){
+ if(!cloudOn()){if(manual)toast('Add your Supabase details in Settings first.');return}
+ if(syncing)return;
+ if(!navigator.onLine){cloud.lastError='Offline — records are safe on this computer and will sync when internet returns.';renderSaveBox();return}
+ syncing=true;renderSaveBox();
+ try{
+  const remote=await cloudGet();
+  if(!remote){ if(hasData(S)||manual) await pushNow(null); }
+  else if(remote.rev===cloud.syncedRev){ if(cloud.dirty) await pushNow(remote); }
+  else if(!hasData(S)||(!cloud.dirty&&remote.rev>cloud.syncedRev)){ applyRemote(remote); toast('Loaded the latest records from the cloud.'); }
+  else { conflict(remote); }
+  if(manual&&!cloud.lastError)toast('Cloud sync complete.');
+ }catch(e){cloud.lastError=e.message;if(manual)toast('Cloud sync failed: '+e.message,5000)}
+ syncing=false;saveLocal(true);
+}
+function conflict(remote){
+ window._remote=remote;if(document.querySelector('[data-conflict]'))return;
+ const rc=remote.data||{};
+ modal(`<h3 data-conflict>Two different copies of the records</h3>
+ <p class="sub">The cloud copy was changed from another computer (or another copy of this file) since this computer last synced.</p>
+ <div class="grid g2">
+  <div class="panel"><h3>This computer</h3><div class="muted">Last change ${esc(S.meta.updatedAt?new Date(S.meta.updatedAt).toLocaleString('en-GB'):'—')}</div><div>${(S.sales||[]).length} sales, ${(S.products||[]).length} products</div></div>
+  <div class="panel"><h3>Cloud</h3><div class="muted">Last change ${esc(rc.meta?.updatedAt?new Date(rc.meta.updatedAt).toLocaleString('en-GB'):'—')}</div><div>${(rc.sales||[]).length} sales, ${(rc.products||[]).length} products</div></div>
+ </div>
+ <p class="muted" style="margin-top:12px">Whichever you choose, the other copy is kept as a snapshot in the cloud, so nothing is lost.</p>
+ <div class="acts"><button class="btn" onclick="closeModal()">Decide later</button>
+ <button class="btn" onclick="resolveConflict('cloud')">Use cloud copy</button>
+ <button class="btn pri" onclick="resolveConflict('local')">Keep this computer’s copy</button></div>`);
+ window._remote=remote;
+}
+async function resolveConflict(which){
+ const remote=window._remote;closeModal();
+ try{
+  if(which==='local'){await snapshot(remote.data,'replaced_'+Date.now());await pushNow(remote);toast('This computer’s copy is now in the cloud.')}
+  else{const keep=JSON.parse(JSON.stringify(S));await snapshot(keep,'replaced_'+Date.now());applyRemote(remote);toast('Loaded the cloud copy.')}
+ }catch(e){toast('Could not finish: '+e.message,5000)}
+}
+function scheduleCloud(){
+ if(!cloudOn()||!cloud.auto)return;
+ clearTimeout(cloudTimer);cloudTimer=setTimeout(()=>syncCloud(false),30000);
+}
+function renderSaveBox(){
+ const el=$('#saveBox');if(!el)return;
+ let c,dot;
+ if(!cloudOn()){dot='off';c='Cloud sync is off'}
+ else if(syncing){dot='warn';c='Syncing…'}
+ else if(cloud.lastError){dot='bad';c=esc(cloud.lastError)}
+ else if(cloud.dirty){dot='warn';c='Cloud: waiting to sync'}
+ else{dot='';c='Cloud: synced '+ago(cloud.lastSync)}
+ el.innerHTML=`<b><span class="dot"></span>Saved on this computer</b><small>${ago(lastLocalSave)}<br></small><span class="dot ${dot}"></span><small style="display:inline">${c}</small>`;
+}
+
+/* ---------- derived values ---------- */
+const prod=id=>S.products.find(p=>p.id===id);
+const custName=id=>S.customers.find(c=>c.id===id)?.name||'Walk-in customer';
+const suppName=id=>S.suppliers.find(c=>c.id===id)?.name||'—';
+const paidOf=s=>r2((s.payments||[]).reduce((a,p)=>a+num(p.amount),0));
+const balOf=s=>s.voided?0:r2(s.total-paidOf(s));
+const costOf=s=>r2(s.items.reduce((a,i)=>a+num(i.cost)*num(i.qty),0));
+const statusOf=s=>s.voided?['Voided','']:balOf(s)<=0.004?['Paid','ok']:paidOf(s)>0?['Part paid','warn']:(s.dueDate&&s.dueDate<today()?['Overdue','bad']:['Unpaid','warn']);
+const custBal=id=>r2(S.sales.filter(s=>s.customerId===id).reduce((a,s)=>a+balOf(s),0));
+const suppBal=id=>r2(S.purchases.filter(p=>p.supplierId===id).reduce((a,p)=>a+(p.total-paidSum(p)),0));
+const paidSum=p=>r2((p.payments||[]).reduce((a,x)=>a+num(x.amount),0));
+const isLow=p=>num(p.qty)<=num(p.reorder);
+function moveStock(pid,qty,type,ref,note){
+ const p=prod(pid);if(!p)return;p.qty=r2(num(p.qty)+qty);
+ S.moves.push({id:uid(),date:today(),time:nowTime(),pid,qty,type,ref:ref||'',note:note||''});
+}
+
+/* ---------- modal ---------- */
+function modal(html,wide){
+ const w=document.createElement('div');w.className='ov';w.onclick=e=>{if(e.target===w)closeModal()};
+ w.innerHTML=`<div class="md ${wide?'wide':''}" role="dialog" aria-modal="true">${html}</div>`;
+ $('#modalRoot').appendChild(w);
+ setTimeout(()=>{const f=w.querySelector('input:not([type=hidden]):not([type=checkbox]),select');f&&f.focus()},30);
+}
+function closeModal(){const r=$('#modalRoot');r.lastElementChild&&r.lastElementChild.remove()}
+function closeAll(){$('#modalRoot').innerHTML=''}
+function confirmBox(msg,yes,label='Confirm'){modal(`<h3>${esc(msg)}</h3><div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" data-yes>${esc(label)}</button></div>`);$('#modalRoot').lastElementChild.querySelector('[data-yes]').onclick=()=>{closeModal();yes()}}
+const val=id=>{const e=document.getElementById(id);return e?e.value:''};
+
+/* ---------- navigation ---------- */
+let view='dash';
+function go(v){view=v;render();window.scrollTo(0,0)}
+function renderNav(){
+ $('#nav').innerHTML=NAV.map(([k,l])=>`<button class="${view===k?'on':''}" onclick="go('${k}')" title="${l}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICONS[k]}</svg><span>${l}</span></button>`).join('');
+ $('#brandName').textContent=S.settings.shopName;$('#brandLoc').textContent=S.settings.location;
+ document.title=S.settings.shopName+' — Records';
+}
+function render(){
+ renderNav();renderSaveBox();
+ const f={dash:vDash,sell:vSell,sales:vSales,prod:vProducts,buy:vPurchases,exp:vExpenses,cust:vCustomers,supp:vSuppliers,rep:vReports,set:vSettings}[view];
+ $('#main').innerHTML=f();
+ if(view==='sell')afterSell();
+}
+const head=(t,p,acts='')=>`<div class="head"><div><h2>${t}</h2>${p?`<p>${p}</p>`:''}</div><div class="row">${acts}</div></div>`;
+const opt=(arr,sel)=>arr.map(o=>{const [v,l]=Array.isArray(o)?o:[o,o];return `<option value="${esc(v)}" ${String(v)===String(sel)?'selected':''}>${esc(l)}</option>`}).join('');
+/* ================= DASHBOARD ================= */
+function salesIn(from,to){return S.sales.filter(s=>!s.voided&&s.date>=from&&s.date<=to)}
+function vDash(){
+ const t=today(), ts=salesIn(t,t);
+ const tTot=ts.reduce((a,s)=>a+s.total,0), tProfit=ts.reduce((a,s)=>a+s.total-costOf(s),0);
+ const mFrom=t.slice(0,8)+'01', ms=salesIn(mFrom,t);
+ const mTot=ms.reduce((a,s)=>a+s.total,0), mProfit=ms.reduce((a,s)=>a+s.total-costOf(s),0);
+ const mExp=S.expenses.filter(e=>e.date>=mFrom&&e.date<=t).reduce((a,e)=>a+num(e.amount),0);
+ const debt=S.sales.reduce((a,s)=>a+balOf(s),0);
+ const low=S.products.filter(p=>p.active!==false&&isLow(p));
+ const stockVal=S.products.reduce((a,p)=>a+Math.max(0,num(p.qty))*num(p.cost),0);
+ const byM={};S.sales.forEach(s=>(s.payments||[]).forEach(p=>{if(p.date===t)byM[p.method]=(byM[p.method]||0)+num(p.amount)}));
+ const days=[...Array(14)].map((_,i)=>addDays(t,i-13));
+ const dv=days.map(d=>salesIn(d,d).reduce((a,s)=>a+s.total,0));const mx=Math.max(1,...dv);
+ const recent=[...S.sales].sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time)).slice(0,8);
+ const hr=new Date().getHours(), greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+ return head(greet,new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}),
+  `<button class="btn pri lg" onclick="go('sell')">New sale</button>`)+
+ `<div class="today"><div><p>Sales today</p><div class="big">${money(tTot)}</div></div>
+  <div class="mini"><div>Sales made<b>${ts.length}</b></div><div>Profit today<b>${money(tProfit)}</b></div>
+  ${METHODS.map(m=>`<div>${m} in<b>${fmt(byM[m]||0)}</b></div>`).join('')}</div></div>
+ <div class="grid g4" style="margin-top:16px">
+  <div class="stat"><span>Sales this month</span><strong>${money(mTot)}</strong><small>${ms.length} sales</small></div>
+  <div class="stat"><span>Net profit this month</span><strong class="${mProfit-mExp<0?'badc':''}">${money(mProfit-mExp)}</strong><small>after ${money(mExp)} expenses</small></div>
+  <div class="stat"><span>Customers owe you</span><strong>${money(debt)}</strong><small><a href="#" onclick="go('cust');return false">See who owes</a></small></div>
+  <div class="stat"><span>Stock value (at cost)</span><strong>${money(stockVal)}</strong><small class="${low.length?'warnc':''}">${low.length} item${low.length===1?'':'s'} running low</small></div>
+ </div>
+ <div class="grid g2" style="margin-top:16px">
+  <div class="panel"><h3>Last 14 days</h3><div class="bars">${days.map((d,i)=>`<div class="${d===t?'t':''}" title="${niceDate(d)}: ${money(dv[i])}"><i style="height:${dv[i]/mx*100}%"></i><small>${new Date(d+'T12:00').getDate()}</small></div>`).join('')}</div></div>
+  <div class="panel"><h3>Running low</h3>${low.length?low.slice(0,7).map(p=>`<div class="list-line"><span>${esc(p.name)}</span><span class="${num(p.qty)<=0?'badc':'warnc'}">${qf(p.qty)} ${esc(p.unit||'')} left</span></div>`).join('')+(low.length>7?`<p class="muted">and ${low.length-7} more</p>`:''):'<p class="muted">Nothing is below its reorder level.</p>'}
+  <div class="row" style="margin-top:10px"><button class="btn sm" onclick="go('buy')">Record a purchase</button></div></div>
+ </div>
+ <div class="panel" style="margin-top:16px"><h3>Recent sales</h3>${salesTable(recent,true)}</div>`;
+}
+
+/* ================= SELL (point of sale) ================= */
+const pos={cart:[],cat:'',q:'',cust:'',method:'Cash',disc:'',paid:'',ref:'',print:true};
+function vSell(){
+ return head('Sell','Tap a product to add it. Sell anything once-off with “Other item”.',
+  `<button class="btn" onclick="otherItem()">Other item</button>`)+
+ `<div class="pos"><div>
+   <input class="i" id="posQ" placeholder="Search product name or code…" value="${esc(pos.q)}" autocomplete="off">
+   <div class="chips" style="margin-top:10px"><button class="chip ${!pos.cat?'on':''}" onclick="pos.cat='';drawProds();markChips(this)">All</button>${S.categories.map(c=>`<button class="chip ${pos.cat===c?'on':''}" onclick="pos.cat=this.dataset.c;drawProds();markChips(this)" data-c="${esc(c)}">${esc(c)}</button>`).join('')}</div>
+   <div class="prods" id="prods"></div>
+  </div>
+  <div class="panel cart" id="cart"></div></div>`;
+}
+function markChips(b){b.parentNode.querySelectorAll('.chip').forEach(x=>x.classList.toggle('on',x===b))}
+function afterSell(){
+ const q=$('#posQ');
+ q.oninput=()=>{pos.q=q.value;drawProds()};
+ q.onkeydown=e=>{if(e.key==='Enter'){const first=filteredProds()[0];if(first){addToCart(first.id);q.value='';pos.q='';drawProds()}}};
+ drawProds();drawCart();q.focus();
+}
+function filteredProds(){
+ const q=pos.q.trim().toLowerCase();
+ return S.products.filter(p=>p.active!==false&&(!pos.cat||p.category===pos.cat)&&(!q||(p.name+' '+(p.sku||'')).toLowerCase().includes(q))).sort((a,b)=>a.name.localeCompare(b.name));
+}
+function drawProds(){
+ const list=filteredProds();
+ $('#prods').innerHTML=list.length?list.map(p=>{const out=num(p.qty)<=0,low=!out&&isLow(p);
+  return `<button class="pc ${out?'out':low?'low':''}" onclick="addToCart('${p.id}')"><b>${esc(p.name)}</b><small>${out?'Out of stock':qf(p.qty)+' '+esc(p.unit||'in stock')}</small><span class="p">${fmt(p.price)}</span></button>`}).join('')
+ :`<div class="empty" style="grid-column:1/-1">${S.products.length?'No product matches that search.':'No products yet. <a href="#" onclick="go(\'prod\');return false">Add your products</a> or use “Other item”.'}</div>`;
+}
+function addToCart(pid){
+ const p=prod(pid);const ex=pos.cart.find(c=>c.pid===pid);
+ if(ex)ex.qty=r2(ex.qty+1);else pos.cart.push({key:uid(),pid,name:p.name,qty:1,price:num(p.price),cost:num(p.cost)});
+ drawCart();
+}
+function otherItem(){
+ modal(`<h3>Other item</h3><p class="sub">For things you sell once in a while that are not in your product list.</p>
+ <div class="fg"><label class="f full">Item name<input class="i" id="oName" placeholder="e.g. Ladies sandals"></label>
+ <label class="f">Quantity<input class="i" id="oQty" type="number" value="1" min="0" step="any"></label>
+ <label class="f">Selling price each<input class="i" id="oPrice" type="number" min="0" step="any"></label>
+ <label class="f full">What it cost you each (for profit)<input class="i" id="oCost" type="number" min="0" step="any" placeholder="Optional"></label></div>
+ <div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="addOther()">Add to sale</button></div>`);
+}
+function addOther(){
+ const name=val('oName').trim();if(!name||num(val('oPrice'))<=0){toast('Enter the item name and price.');return}
+ pos.cart.push({key:uid(),pid:null,name,qty:num(val('oQty'))||1,price:num(val('oPrice')),cost:num(val('oCost'))});
+ closeModal();if(view==='sell')drawCart();
+}
+const cartSub=()=>r2(pos.cart.reduce((a,c)=>a+c.qty*c.price,0));
+function drawCart(){
+ const el=$('#cart');if(!el)return;
+ const sub=cartSub(),disc=Math.min(num(pos.disc),sub),tot=r2(sub-disc);
+ const paid=pos.paid===''?tot:num(pos.paid);const change=r2(paid-tot);
+ el.innerHTML=`<h3>Current sale</h3>
+ ${pos.cart.length?pos.cart.map(c=>`<div class="cl"><div class="nm">${esc(c.name)}</div><div class="n" style="font-weight:600">${fmt(c.qty*c.price)}</div>
+  <div class="row" style="gap:6px"><span class="qty"><button onclick="cq('${c.key}',-1)" aria-label="Less">−</button><input value="${c.qty}" onchange="cqs('${c.key}',this.value)" aria-label="Quantity"><button onclick="cq('${c.key}',1)" aria-label="More">+</button></span>
+  <span class="muted">@</span><input class="pin" type="number" step="any" value="${c.price}" onchange="cp('${c.key}',this.value)" aria-label="Price"></div>
+  <div><button class="btn ghost sm danger" onclick="crm('${c.key}')">Remove</button></div></div>`).join('')
+ :'<p class="muted">No items yet.</p>'}
+ <div style="margin-top:10px">
+  <div class="tot"><span>Subtotal</span><span>${fmt(sub)}</span></div>
+  <div class="tot"><span>Discount</span><input class="pin" type="number" min="0" step="any" value="${esc(pos.disc)}" placeholder="0" onchange="pos.disc=this.value;drawCart()"></div>
+  <div class="tot g"><span>Total</span><span>${money(tot)}</span></div>
+ </div>
+ <div class="sep"></div>
+ <label class="f">Customer<select class="i" onchange="if(this.value==='__new'){newCustomer(id=>{pos.cust=id;drawCart()})}else{pos.cust=this.value}">${opt([['','Walk-in customer'],...S.customers.map(c=>[c.id,c.name+(c.phone?' · '+c.phone:'')]),['__new','+ New customer…']],pos.cust)}</select></label>
+ <div style="margin:12px 0 6px;font-size:13px;color:var(--muted);font-weight:500">Paid by</div>
+ <div class="pay">${METHODS.map(m=>`<button class="${pos.method===m?'on':''}" onclick="pos.method='${m}';drawCart()">${m}</button>`).join('')}</div>
+ <div class="fg" style="margin-top:10px">
+  <label class="f">Amount paid<input class="i" type="number" min="0" step="any" value="${esc(pos.paid)}" placeholder="${fmt(tot)}" onchange="pos.paid=this.value;drawCart()"></label>
+  <label class="f">${pos.method==='M-Pesa'?'M-Pesa code':'Reference'}<input class="i" value="${esc(pos.ref)}" onchange="pos.ref=this.value" placeholder="Optional"></label>
+ </div>
+ ${pos.cart.length&&change>0.004?`<div class="alert ok" style="margin:10px 0 0">Give change: <b>${money(change)}</b></div>`:''}
+ ${pos.cart.length&&change<-0.004?`<div class="alert warn" style="margin:10px 0 0">${money(-change)} not paid — this becomes an invoice on the customer’s account.</div>`:''}
+ <label class="row" style="margin:12px 0;font-size:14px"><input type="checkbox" ${pos.print?'checked':''} onchange="pos.print=this.checked"> Print receipt</label>
+ <div class="row"><button class="btn" onclick="pos.cart=[];pos.disc='';pos.paid='';pos.ref='';drawCart()" ${pos.cart.length?'':'disabled'}>Clear</button>
+ <button class="btn pri lg grow" onclick="completeSale()" ${pos.cart.length?'':'disabled'}>Complete sale</button></div>`;
+}
+const cfind=k=>pos.cart.find(c=>c.key===k);
+function cq(k,d){const c=cfind(k);c.qty=r2(Math.max(0,c.qty+d));if(!c.qty)crm(k);else drawCart()}
+function cqs(k,v){const c=cfind(k);c.qty=Math.max(0,num(v));if(!c.qty)crm(k);else drawCart()}
+function cp(k,v){cfind(k).price=Math.max(0,num(v));drawCart()}
+function crm(k){pos.cart=pos.cart.filter(c=>c.key!==k);drawCart()}
+function stockShort(items){
+ const need={};items.forEach(i=>{if(i.pid)need[i.pid]=(need[i.pid]||0)+num(i.qty)});
+ return Object.keys(need).filter(id=>need[id]>num(prod(id)?.qty)).map(id=>prod(id).name+' (have '+qf(prod(id).qty)+')');
+}
+function completeSale(force){
+ const sub=cartSub(),disc=r2(Math.min(num(pos.disc),sub)),tot=r2(sub-disc);
+ const paid=r2(Math.min(pos.paid===''?tot:num(pos.paid),tot));
+ if(paid<tot&&!pos.cust){toast('Choose the customer — part of this sale is on credit.');return}
+ const short=stockShort(pos.cart);
+ if(short.length&&!force){
+  if(!S.settings.allowNegative){toast('Not enough stock: '+short.join(', '),5000);return}
+  confirmBox('Stock shows less than you are selling: '+short.join(', ')+'. Sell anyway?',()=>completeSale(true),'Sell anyway');return;
+ }
+ const credit=paid<tot, kind=credit?'invoice':'receipt';
+ const no=(credit?'INV-':'R-')+String(S.counters[kind]++).padStart(4,'0');
+ const s={id:uid(),no,kind,date:today(),time:nowTime(),customerId:pos.cust||'',items:pos.cart.map(({pid,name,qty,price,cost})=>({pid,name,qty,price,cost})),
+  subtotal:sub,discount:disc,total:tot,payments:paid>0?[{id:uid(),date:today(),amount:paid,method:pos.method,ref:pos.ref}]:[],
+  dueDate:credit?addDays(today(),14):'',notes:'',voided:false};
+ S.sales.push(s);s.items.forEach(i=>i.pid&&moveStock(i.pid,-i.qty,'sale',no));
+ commit();
+ const doPrint=pos.print;
+ Object.assign(pos,{cart:[],disc:'',paid:'',ref:'',cust:''});
+ drawCart();drawProds();toast((credit?'Invoice ':'Sale ')+no+' saved — '+money(tot));
+ if(doPrint)printDoc(s.id,'receipt');
+}
+
+/* ================= SALES & INVOICES ================= */
+const sf={tab:'all',q:'',from:addDays(today(),-30),to:today()};
+function salesTable(list,compact){
+ if(!list.length)return '<div class="empty">No sales to show.</div>';
+ return `<div class="tw"><table><thead><tr><th>Number</th><th>Date</th><th>Customer</th>${compact?'':'<th class="n">Items</th>'}<th class="n">Total</th>${compact?'':'<th class="n">Balance</th>'}<th>Status</th><th></th></tr></thead><tbody>
+ ${list.map(s=>{const [st,c]=statusOf(s);return `<tr><td><b>${esc(s.no)}</b></td><td>${niceDate(s.date)} <span class="muted">${s.time||''}</span></td><td>${esc(custName(s.customerId))}</td>${compact?'':`<td class="n">${s.items.length}</td>`}<td class="n">${fmt(s.total)}</td>${compact?'':`<td class="n ${balOf(s)>0?'badc':''}">${fmt(balOf(s))}</td>`}<td><span class="tag ${c}">${st}</span></td>
+ <td class="n"><button class="btn sm" onclick="viewSale('${s.id}')">Open</button>${!compact&&balOf(s)>0?` <button class="btn sm pri" onclick="payModal('${s.id}')">Receive payment</button>`:''}</td></tr>`}).join('')}
+ </tbody></table></div>`;
+}
+function vSales(){
+ const q=sf.q.toLowerCase();
+ let list=S.sales.filter(s=>{
+  if(sf.tab==='unpaid')return balOf(s)>0;
+  if(s.date<sf.from||s.date>sf.to)return false;
+  if(sf.tab==='receipt'&&s.kind!=='receipt')return false;
+  if(sf.tab==='invoice'&&s.kind!=='invoice')return false;
+  if(sf.tab==='void'&&!s.voided)return false;
+  return true;
+ }).filter(s=>!q||(s.no+' '+custName(s.customerId)+' '+s.items.map(i=>i.name).join(' ')).toLowerCase().includes(q))
+ .sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
+ const tot=list.filter(s=>!s.voided).reduce((a,s)=>a+s.total,0);
+ return head('Sales & invoices','Every receipt and invoice, with what is still owed.',`<button class="btn" onclick="exportSalesCSV()">Export CSV</button><button class="btn pri" onclick="newInvoice()">New invoice</button>`)+
+ `<div class="row" style="margin-bottom:12px"><div class="chips">${[['all','All'],['receipt','Receipts'],['invoice','Invoices'],['unpaid','Unpaid (any date)'],['void','Voided']].map(([k,l])=>`<button class="chip ${sf.tab===k?'on':''}" onclick="sf.tab='${k}';render()">${l}</button>`).join('')}</div>
+ <div class="grow"></div>
+ ${sf.tab!=='unpaid'?`<input class="i" type="date" style="width:auto" value="${sf.from}" onchange="sf.from=this.value;render()" aria-label="From"><span class="muted">to</span><input class="i" type="date" style="width:auto" value="${sf.to}" onchange="sf.to=this.value;render()" aria-label="To">`:''}
+ <input class="i" style="width:220px" placeholder="Search number, customer, item" value="${esc(sf.q)}" onchange="sf.q=this.value;render()"></div>
+ <p class="muted">${list.length} record${list.length===1?'':'s'} · total ${money(tot)}</p>${salesTable(list)}`;
+}
+function viewSale(id){
+ const s=S.sales.find(x=>x.id===id);const [st,c]=statusOf(s);
+ modal(`<div class="row"><h3 class="grow">${s.kind==='invoice'?'Invoice':'Receipt'} ${esc(s.no)}</h3><span class="tag ${c}">${st}</span></div>
+ <p class="sub">${niceDate(s.date)} ${s.time||''} · ${esc(custName(s.customerId))}${s.dueDate?' · due '+niceDate(s.dueDate):''}</p>
+ <div class="tw"><table><thead><tr><th>Item</th><th class="n">Qty</th><th class="n">Price</th><th class="n">Amount</th></tr></thead><tbody>
+ ${s.items.map(i=>`<tr><td>${esc(i.name)}</td><td class="n">${qf(i.qty)}</td><td class="n">${fmt(i.price)}</td><td class="n">${fmt(i.qty*i.price)}</td></tr>`).join('')}</tbody></table></div>
+ <div style="max-width:300px;margin:10px 0 0 auto">
+ ${s.discount?`<div class="tot"><span>Subtotal</span><span>${fmt(s.subtotal)}</span></div><div class="tot"><span>Discount</span><span>−${fmt(s.discount)}</span></div>`:''}
+ <div class="tot g"><span>Total</span><span>${money(s.total)}</span></div>
+ <div class="tot"><span>Paid</span><span>${fmt(paidOf(s))}</span></div>
+ <div class="tot" style="font-weight:700"><span>Balance</span><span class="${balOf(s)>0?'badc':''}">${fmt(balOf(s))}</span></div></div>
+ ${(s.payments||[]).length?`<h3 style="font-size:15px;margin:14px 0 6px">Payments</h3>${s.payments.map(p=>`<div class="list-line"><span>${niceDate(p.date)} · ${esc(p.method)}${p.ref?' · '+esc(p.ref):''}</span><span>${fmt(p.amount)}</span></div>`).join('')}`:''}
+ ${s.notes?`<p class="muted">${esc(s.notes)}</p>`:''}
+ <div class="acts">${!s.voided?`<button class="btn danger" onclick="voidSale('${s.id}')">Void</button>`:''}
+ <button class="btn" onclick="printDoc('${s.id}','receipt')">Print receipt</button><button class="btn" onclick="printDoc('${s.id}','a4')">Print A4</button>
+ ${balOf(s)>0?`<button class="btn pri" onclick="payModal('${s.id}')">Receive payment</button>`:''}<button class="btn" onclick="closeModal()">Close</button></div>`,true);
+}
+function payModal(id){
+ const s=S.sales.find(x=>x.id===id);
+ modal(`<h3>Receive payment</h3><p class="sub">${esc(s.no)} · ${esc(custName(s.customerId))} · balance ${money(balOf(s))}</p>
+ <div class="fg"><label class="f">Amount<input class="i" id="pAmt" type="number" step="any" value="${balOf(s)}"></label>
+ <label class="f">Date<input class="i" id="pDate" type="date" value="${today()}"></label>
+ <label class="f">Method<select class="i" id="pMeth">${opt(METHODS,'M-Pesa')}</select></label>
+ <label class="f">Reference / M-Pesa code<input class="i" id="pRef"></label></div>
+ <div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="savePay('${id}')">Save payment</button></div>`);
+}
+function savePay(id){
+ const s=S.sales.find(x=>x.id===id);const a=r2(num(val('pAmt')));
+ if(a<=0){toast('Enter an amount.');return}
+ if(a>balOf(s)+0.004){toast('That is more than the balance of '+money(balOf(s))+'.');return}
+ s.payments.push({id:uid(),date:val('pDate')||today(),amount:a,method:val('pMeth'),ref:val('pRef')});
+ commit();closeAll();render();toast('Payment of '+money(a)+' saved.');
+}
+function voidSale(id){
+ const s=S.sales.find(x=>x.id===id);
+ confirmBox('Void '+s.no+'? Items go back into stock and it stops counting in reports.',()=>{
+  s.voided=true;s.voidedOn=today();s.items.forEach(i=>i.pid&&moveStock(i.pid,i.qty,'void',s.no));commit();closeAll();render();toast(s.no+' voided.');
+ },'Void it',true);
+}
+
+/* ---------- shared line editor (invoices and purchases) ---------- */
+let ed=null; // {mode:'invoice'|'purchase', lines:[]}
+function edLines(){
+ const isP=ed.mode==='purchase';
+ $('#edLines').innerHTML=`<div class="tw"><table><thead><tr><th style="min-width:200px">Product</th><th class="n">Qty</th><th class="n">${isP?'Unit cost':'Price'}</th>${isP?'<th class="n">New selling price</th>':''}<th class="n">Amount</th><th></th></tr></thead><tbody>
+ ${ed.lines.map((l,i)=>`<tr><td>${l.pid!==null||isP?`<select class="i" onchange="edPick(${i},this.value)">${opt([['','Choose…'],...S.products.filter(p=>p.active!==false).sort((a,b)=>a.name.localeCompare(b.name)).map(p=>[p.id,p.name])],l.pid)}${isP?'':'<option value="__other">Other item (type name)…</option>'}</select>`:`<input class="i" value="${esc(l.name)}" placeholder="Item name" onchange="ed.lines[${i}].name=this.value">`}</td>
+ <td class="n"><input class="pin" style="width:70px" type="number" step="any" value="${l.qty}" onchange="ed.lines[${i}].qty=num(this.value);edLines()"></td>
+ <td class="n"><input class="pin" type="number" step="any" value="${l.rate}" onchange="ed.lines[${i}].rate=num(this.value);edLines()"></td>
+ ${isP?`<td class="n"><input class="pin" type="number" step="any" value="${l.sell??''}" placeholder="keep" onchange="ed.lines[${i}].sell=this.value"></td>`:''}
+ <td class="n">${fmt(l.qty*l.rate)}</td><td><button class="btn ghost sm danger" onclick="ed.lines.splice(${i},1);edLines()" aria-label="Remove line">✕</button></td></tr>`).join('')}
+ </tbody></table></div>
+ <div class="row" style="margin-top:8px"><button class="btn sm" onclick="ed.lines.push({pid:'',name:'',qty:1,rate:0});edLines()">Add line</button><div class="grow"></div><b>Total ${money(edTotal())}</b></div>`;
+}
+const edTotal=()=>r2(ed.lines.reduce((a,l)=>a+num(l.qty)*num(l.rate),0)-(ed.mode==='invoice'?num(val('ivDisc')):0));
+function edPick(i,v){
+ const l=ed.lines[i];
+ if(v==='__other'){l.pid=null;l.name='';l.rate=0}
+ else{const p=prod(v);l.pid=v;l.name=p?p.name:'';l.rate=ed.mode==='purchase'?num(p?.cost):num(p?.price)}
+ edLines();
+}
+function newInvoice(){
+ ed={mode:'invoice',lines:[{pid:'',name:'',qty:1,rate:0}]};
+ modal(`<h3>New invoice</h3><p class="sub">For customers who take goods now and pay later.</p>
+ <div class="fg"><label class="f">Customer<select class="i" id="ivCust" onchange="if(this.value==='__new')newCustomer(id=>{newInvoiceRefreshCust(id)})">${opt([['','Choose customer…'],...S.customers.map(c=>[c.id,c.name]),['__new','+ New customer…']],'')}</select></label>
+ <label class="f">Date<input class="i" id="ivDate" type="date" value="${today()}"></label>
+ <label class="f">Due date<input class="i" id="ivDue" type="date" value="${addDays(today(),14)}"></label>
+ <label class="f">Discount<input class="i" id="ivDisc" type="number" step="any" value="0" onchange="edLines()"></label></div>
+ <div id="edLines" style="margin-top:14px"></div>
+ <div class="fg" style="margin-top:12px"><label class="f">Deposit paid now<input class="i" id="ivDep" type="number" step="any" placeholder="0"></label>
+ <label class="f">Deposit method<select class="i" id="ivMeth">${opt(METHODS,'M-Pesa')}</select></label>
+ <label class="f full">Notes on invoice<input class="i" id="ivNotes"></label></div>
+ <div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="saveInvoice()">Save invoice</button></div>`,true);
+ edLines();
+}
+function newInvoiceRefreshCust(id){const s=$('#ivCust');if(s){s.innerHTML=opt([['','Choose customer…'],...S.customers.map(c=>[c.id,c.name]),['__new','+ New customer…']],id)}}
+function saveInvoice(){
+ const cust=val('ivCust');if(!cust||cust==='__new'){toast('Choose the customer.');return}
+ const lines=ed.lines.filter(l=>(l.pid||l.name)&&num(l.qty)>0);
+ if(!lines.length){toast('Add at least one item.');return}
+ const items=lines.map(l=>({pid:l.pid||null,name:l.pid?prod(l.pid).name:l.name,qty:num(l.qty),price:num(l.rate),cost:l.pid?num(prod(l.pid).cost):0}));
+ const sub=r2(items.reduce((a,i)=>a+i.qty*i.price,0)),disc=r2(Math.min(num(val('ivDisc')),sub)),tot=r2(sub-disc),dep=r2(Math.min(num(val('ivDep')),tot));
+ const no='INV-'+String(S.counters.invoice++).padStart(4,'0');
+ const s={id:uid(),no,kind:'invoice',date:val('ivDate')||today(),time:nowTime(),customerId:cust,items,subtotal:sub,discount:disc,total:tot,
+  payments:dep>0?[{id:uid(),date:val('ivDate')||today(),amount:dep,method:val('ivMeth'),ref:'Deposit'}]:[],dueDate:val('ivDue'),notes:val('ivNotes'),voided:false};
+ S.sales.push(s);items.forEach(i=>i.pid&&moveStock(i.pid,-i.qty,'sale',no));
+ commit();closeAll();render();toast('Invoice '+no+' saved.');viewSale(s.id);
+}
+/* ================= PRODUCTS & STOCK ================= */
+const pf={q:'',cat:'',low:false,arch:false};
+const UNITS=['pcs','bottle','tube','jar','pack','tray','pair','box','sachet','kg','litre'];
+function vProducts(){
+ const q=pf.q.toLowerCase();
+ const list=S.products.filter(p=>(pf.arch?p.active===false:p.active!==false)&&(!pf.cat||p.category===pf.cat)&&(!pf.low||isLow(p))&&(!q||(p.name+' '+(p.sku||'')).toLowerCase().includes(q))).sort((a,b)=>a.name.localeCompare(b.name));
+ const val=list.reduce((a,p)=>a+Math.max(0,num(p.qty))*num(p.cost),0);
+ return head('Products & stock','Prices, quantities and reorder levels. Stock goes down with every sale and up with every purchase.',
+  `<button class="btn" onclick="importProducts()">Import from CSV</button><button class="btn" onclick="exportProductsCSV()">Export CSV</button><button class="btn pri" onclick="productModal()">Add product</button>`)+
+ `<div class="row" style="margin-bottom:12px"><input class="i" style="width:240px" placeholder="Search name or code" value="${esc(pf.q)}" onchange="pf.q=this.value;render()">
+ <select class="i" style="width:auto" onchange="pf.cat=this.value;render()">${opt([['','All categories'],...S.categories],pf.cat)}</select>
+ <label class="row" style="gap:6px"><input type="checkbox" ${pf.low?'checked':''} onchange="pf.low=this.checked;render()"> Running low only</label>
+ <label class="row" style="gap:6px"><input type="checkbox" ${pf.arch?'checked':''} onchange="pf.arch=this.checked;render()"> Show archived</label>
+ <div class="grow"></div><span class="muted">${list.length} products · stock value ${money(val)}</span></div>
+ ${list.length?`<div class="tw"><table><thead><tr><th>Product</th><th>Category</th><th class="n">In stock</th><th class="n">Reorder at</th><th class="n">Cost</th><th class="n">Price</th><th class="n">Margin</th><th class="n">Value</th><th></th></tr></thead><tbody>
+ ${list.map(p=>{const m=num(p.price)?((num(p.price)-num(p.cost))/num(p.price)*100):0;return `<tr><td><b>${esc(p.name)}</b>${p.sku?`<br><span class="muted">${esc(p.sku)}</span>`:''}</td><td>${esc(p.category)}</td>
+ <td class="n ${num(p.qty)<=0?'badc':isLow(p)?'warnc':''}">${qf(p.qty)} ${esc(p.unit||'')}</td><td class="n">${qf(p.reorder)}</td><td class="n">${fmt(p.cost)}</td><td class="n">${fmt(p.price)}</td><td class="n">${m.toFixed(0)}%</td><td class="n">${fmt(Math.max(0,num(p.qty))*num(p.cost))}</td>
+ <td class="n"><button class="btn sm" onclick="adjustModal('${p.id}')">Adjust stock</button> <button class="btn sm" onclick="productModal('${p.id}')">Edit</button> <button class="btn sm ghost" onclick="historyModal('${p.id}')">History</button></td></tr>`}).join('')}
+ </tbody></table></div>`:`<div class="panel empty">${S.products.length?'No products match these filters.':'Add your first product, or import your item list exported from QuickBooks as CSV.'}</div>`}`;
+}
+function productModal(id){
+ const p=id?prod(id):{name:'',sku:'',category:S.categories[0],unit:'pcs',cost:'',price:'',qty:'',reorder:3};
+ modal(`<h3>${id?'Edit product':'Add product'}</h3><p class="sub">${id?'Change the quantity with “Adjust stock” so the history stays correct.':'Opening stock is what you have on the shelf today.'}</p>
+ <div class="fg"><label class="f full">Name<input class="i" id="pName" value="${esc(p.name)}" placeholder="e.g. Dark & Lovely relaxer 250ml"></label>
+ <label class="f">Code / barcode<input class="i" id="pSku" value="${esc(p.sku)}" placeholder="Optional"></label>
+ <label class="f">Category<select class="i" id="pCat" onchange="if(this.value==='__new'){const n=prompt('New category name');if(n&&n.trim()){S.categories.push(n.trim());this.innerHTML=opt([...S.categories,['__new','+ New category…']],n.trim())}else this.value=S.categories[0]}">${opt([...S.categories,['__new','+ New category…']],p.category)}</select></label>
+ <label class="f">Buying price (cost)<input class="i" id="pCost" type="number" step="any" value="${p.cost}"></label>
+ <label class="f">Selling price<input class="i" id="pPrice" type="number" step="any" value="${p.price}"></label>
+ <label class="f">Unit<select class="i" id="pUnit">${opt([...new Set([...UNITS,p.unit||'pcs'])],p.unit)}</select></label>
+ <label class="f">Warn me when stock reaches<input class="i" id="pRe" type="number" step="any" value="${p.reorder}"></label>
+ ${id?'':`<label class="f">Opening stock<input class="i" id="pQty" type="number" step="any" value="" placeholder="0"></label>`}</div>
+ <div class="acts">${id?`<button class="btn danger" onclick="archiveProduct('${id}')">${p.active===false?'Restore':'Archive'}</button><div class="grow"></div>`:''}<button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="saveProduct('${id||''}')">Save product</button></div>`);
+}
+function saveProduct(id){
+ const name=val('pName').trim();if(!name){toast('Enter the product name.');return}
+ const dup=S.products.find(x=>x.id!==id&&x.name.toLowerCase()===name.toLowerCase());if(dup){toast('A product with that name already exists.');return}
+ const d={name,sku:val('pSku').trim(),category:val('pCat'),unit:val('pUnit'),cost:num(val('pCost')),price:num(val('pPrice')),reorder:num(val('pRe'))};
+ if(id)Object.assign(prod(id),d);
+ else{const p={id:uid(),...d,qty:0,active:true,created:today()};S.products.push(p);const q=num(val('pQty'));if(q)moveStock(p.id,q,'opening','','Opening stock')}
+ commit();closeModal();render();toast('Product saved.');
+}
+function archiveProduct(id){const p=prod(id);p.active=p.active===false;commit();closeModal();render();toast(p.active?'Product restored.':'Product archived. Its sales history is kept.')}
+function adjustModal(id){
+ const p=prod(id);
+ modal(`<h3>Adjust stock</h3><p class="sub">${esc(p.name)} · now ${qf(p.qty)} ${esc(p.unit||'')}. To record goods bought from a supplier, use Purchases instead.</p>
+ <div class="fg"><label class="f full">What happened<select class="i" id="aType">${opt([['count','I counted the shelf — set the exact quantity'],['add','Add stock (gift, return, found)'],['damaged','Remove: damaged or broken'],['expired','Remove: expired'],['own','Remove: taken for own use'],['lost','Remove: missing / stolen']],'count')}</select></label>
+ <label class="f">Quantity<input class="i" id="aQty" type="number" step="any"></label><label class="f">Note<input class="i" id="aNote" placeholder="Optional"></label></div>
+ <div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="saveAdjust('${id}')">Save adjustment</button></div>`);
+}
+function saveAdjust(id){
+ const p=prod(id),t=val('aType'),q=num(val('aQty'));
+ if(val('aQty')===''){toast('Enter the quantity.');return}
+ const d=t==='count'?r2(q-num(p.qty)):t==='add'?q:-q;
+ if(!d){closeModal();return}
+ moveStock(id,d,t==='count'?'count':t,'',val('aNote'));commit();closeModal();render();toast('Stock updated to '+qf(p.qty)+'.');
+}
+const MOVE_LABEL={sale:'Sold',void:'Sale voided',purchase:'Purchased',purchaseVoid:'Purchase voided',opening:'Opening stock',count:'Stock count',add:'Added',damaged:'Damaged',expired:'Expired',own:'Own use',lost:'Missing',import:'Imported'};
+function historyModal(id){
+ const p=prod(id),m=S.moves.filter(x=>x.pid===id).sort((a,b)=>(b.date+b.time).localeCompare(a.date+a.time));
+ modal(`<h3>Stock history</h3><p class="sub">${esc(p.name)} · now ${qf(p.qty)} ${esc(p.unit||'')}</p>
+ ${m.length?`<div class="tw" style="max-height:55vh;overflow:auto"><table><thead><tr><th>Date</th><th>What</th><th>Ref</th><th class="n">Change</th></tr></thead><tbody>${m.map(x=>`<tr><td>${niceDate(x.date)} <span class="muted">${x.time||''}</span></td><td>${MOVE_LABEL[x.type]||x.type}${x.note?` <span class="muted">· ${esc(x.note)}</span>`:''}</td><td>${esc(x.ref)}</td><td class="n ${x.qty<0?'badc':'okc'}">${x.qty>0?'+':''}${qf(x.qty)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">No stock movements yet.</p>'}
+ <div class="acts"><button class="btn" onclick="closeModal()">Close</button></div>`,true);
+}
+
+/* ---- CSV helpers ---- */
+function parseCSV(t){const rows=[];let r=[],f='',q=false;for(let i=0;i<t.length;i++){const c=t[i];if(q){if(c==='"'){if(t[i+1]==='"'){f+='"';i++}else q=false}else f+=c}else if(c==='"')q=true;else if(c===','){r.push(f);f=''}else if(c==='\n'||c==='\r'){if(c==='\r'&&t[i+1]==='\n')i++;r.push(f);rows.push(r);r=[];f=''}else f+=c}if(f||r.length){r.push(f);rows.push(r)}return rows.filter(x=>x.some(v=>v.trim()))}
+function downloadCSV(name,rows){
+ const csv=rows.map(r=>r.map(v=>{v=String(v??'');return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(',')).join('\r\n');
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\ufeff'+csv],{type:'text/csv'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+function exportProductsCSV(){downloadCSV('products_'+today()+'.csv',[['Name','Code','Category','Unit','Cost','Price','Qty','Reorder'],...S.products.map(p=>[p.name,p.sku,p.category,p.unit,p.cost,p.price,p.qty,p.reorder])])}
+function importProducts(){
+ modal(`<h3>Import products from CSV</h3><p class="sub">Works with an item list exported from QuickBooks or Excel. The first row must be headings. Recognised headings: name (or item, product), code (sku, barcode), category (type), unit, cost (purchase cost, buying), price (sales price, selling, rate), qty (quantity on hand, stock), reorder.</p>
+ <input type="file" accept=".csv,text/csv" id="impF" class="i">
+ <label class="row" style="margin-top:10px"><input type="checkbox" id="impUpd" checked> Update products that already exist (matched by name)</label>
+ <div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="doImport()">Import</button></div>`);
+}
+function doImport(){
+ const f=$('#impF').files[0];if(!f){toast('Choose a CSV file.');return}
+ const upd=$('#impUpd').checked;
+ f.text().then(t=>{
+  const rows=parseCSV(t.replace(/^\ufeff/,''));if(rows.length<2){toast('The file has no rows.');return}
+  const h=rows[0].map(x=>x.trim().toLowerCase());
+  const col=(...k)=>h.findIndex(x=>k.some(y=>x===y||x.includes(y)));
+  const c={name:col('name','item','product','description'),sku:col('sku','code','barcode'),cat:col('category','type','group'),unit:col('unit','uom'),
+   cost:col('purchase cost','cost','buying'),price:col('sales price','selling','price','rate'),qty:col('quantity on hand','qty','quantity','stock','on hand'),re:col('reorder')};
+  if(c.name<0){toast('No “name” column found.');return}
+  let add=0,up=0;
+  rows.slice(1).forEach(r=>{
+   const g=i=>i>=0?(r[i]||'').trim():'';const name=g(c.name);if(!name)return;
+   let p=S.products.find(x=>x.name.toLowerCase()===name.toLowerCase());
+   let cat=g(c.cat)||'Other';if(!S.categories.includes(cat))S.categories.push(cat);
+   const d={name,sku:g(c.sku),category:cat,unit:g(c.unit)||'pcs',cost:num(g(c.cost)),price:num(g(c.price)),reorder:c.re>=0?num(g(c.re)):3};
+   if(p){if(!upd)return;Object.assign(p,d);if(c.qty>=0){const dq=r2(num(g(c.qty))-num(p.qty));if(dq)moveStock(p.id,dq,'import','','CSV import')}up++}
+   else{p={id:uid(),...d,qty:0,active:true,created:today()};S.products.push(p);if(c.qty>=0&&num(g(c.qty)))moveStock(p.id,num(g(c.qty)),'opening','','CSV import');add++}
+  });
+  commit();closeModal();render();toast(`Imported: ${add} new, ${up} updated.`);
+ });
+}
+
+/* ================= PURCHASES (stock in) ================= */
+function vPurchases(){
+ const list=[...S.purchases].sort((a,b)=>b.date.localeCompare(a.date));
+ const owed=S.purchases.filter(p=>!p.voided).reduce((a,p)=>a+(p.total-paidSum(p)),0);
+ return head('Purchases','Goods bought for the shop. Saving a purchase adds the items to stock and updates their cost.',`<button class="btn pri" onclick="newPurchase()">Record purchase</button>`)+
+ `<p class="muted">You owe suppliers ${money(owed)}.</p>
+ ${list.length?`<div class="tw"><table><thead><tr><th>Number</th><th>Date</th><th>Supplier</th><th class="n">Items</th><th class="n">Total</th><th class="n">Owed</th><th></th></tr></thead><tbody>
+ ${list.map(p=>{const o=p.voided?0:r2(p.total-paidSum(p));return `<tr><td><b>${esc(p.no)}</b>${p.voided?' <span class="tag">Voided</span>':''}</td><td>${niceDate(p.date)}</td><td>${esc(suppName(p.supplierId))}</td><td class="n">${p.items.length}</td><td class="n">${fmt(p.total)}</td><td class="n ${o>0?'badc':''}">${fmt(o)}</td>
+ <td class="n"><button class="btn sm" onclick="viewPurchase('${p.id}')">Open</button>${o>0?` <button class="btn sm pri" onclick="paySupplierModal('${p.id}')">Pay</button>`:''}</td></tr>`}).join('')}</tbody></table></div>`:'<div class="panel empty">No purchases yet. Record the stock you buy here so quantities and profit stay accurate.</div>'}`;
+}
+function newPurchase(){
+ ed={mode:'purchase',lines:[{pid:'',name:'',qty:1,rate:0}]};
+ modal(`<h3>Record purchase</h3><p class="sub">New products must be added under Products first.</p>
+ <div class="fg"><label class="f">Supplier<select class="i" id="puSup" onchange="if(this.value==='__new')newSupplier(id=>{this.innerHTML=opt([['','No supplier'],...S.suppliers.map(s=>[s.id,s.name]),['__new','+ New supplier…']],id)})">${opt([['','No supplier'],...S.suppliers.map(s=>[s.id,s.name]),['__new','+ New supplier…']],'')}</select></label>
+ <label class="f">Date<input class="i" id="puDate" type="date" value="${today()}"></label></div>
+ <div id="edLines" style="margin-top:14px"></div>
+ <div class="fg" style="margin-top:12px"><label class="f">Amount paid now<input class="i" id="puPaid" type="number" step="any" placeholder="Leave blank if paid in full"></label>
+ <label class="f">Paid by<select class="i" id="puMeth">${opt(METHODS,'Cash')}</select></label>
+ <label class="f full">Supplier invoice no. / notes<input class="i" id="puNote"></label></div>
+ <div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="savePurchase()">Save purchase</button></div>`,true);
+ edLines();
+}
+function savePurchase(){
+ const lines=ed.lines.filter(l=>l.pid&&num(l.qty)>0);if(!lines.length){toast('Add at least one product.');return}
+ const total=r2(lines.reduce((a,l)=>a+num(l.qty)*num(l.rate),0));
+ const pv=val('puPaid'),paid=r2(pv===''?total:Math.min(num(pv),total));
+ const sup=val('puSup')==='__new'?'':val('puSup');
+ if(paid<total&&!sup){toast('Choose the supplier — part of this purchase is unpaid.');return}
+ const no='P-'+String(S.counters.purchase++).padStart(4,'0'),date=val('puDate')||today();
+ lines.forEach(l=>{const p=prod(l.pid),oq=Math.max(0,num(p.qty)),nq=num(l.qty);
+  p.cost=r2((oq*num(p.cost)+nq*num(l.rate))/((oq+nq)||1)); // weighted average cost
+  if(l.sell!==undefined&&l.sell!=='')p.price=num(l.sell);
+  moveStock(l.pid,nq,'purchase',no)});
+ S.purchases.push({id:uid(),no,date,supplierId:sup,items:lines.map(l=>({pid:l.pid,name:prod(l.pid).name,qty:num(l.qty),cost:num(l.rate)})),total,
+  payments:paid>0?[{id:uid(),date,amount:paid,method:val('puMeth'),ref:''}]:[],notes:val('puNote'),voided:false});
+ commit();closeAll();render();toast('Purchase '+no+' saved and stock updated.');
+}
+function viewPurchase(id){
+ const p=S.purchases.find(x=>x.id===id);
+ modal(`<h3>Purchase ${esc(p.no)}${p.voided?' <span class="tag">Voided</span>':''}</h3><p class="sub">${niceDate(p.date)} · ${esc(suppName(p.supplierId))}${p.notes?' · '+esc(p.notes):''}</p>
+ <div class="tw"><table><thead><tr><th>Product</th><th class="n">Qty</th><th class="n">Unit cost</th><th class="n">Amount</th></tr></thead><tbody>${p.items.map(i=>`<tr><td>${esc(i.name)}</td><td class="n">${qf(i.qty)}</td><td class="n">${fmt(i.cost)}</td><td class="n">${fmt(i.qty*i.cost)}</td></tr>`).join('')}</tbody></table></div>
+ <div style="max-width:300px;margin:10px 0 0 auto"><div class="tot g"><span>Total</span><span>${money(p.total)}</span></div><div class="tot"><span>Paid</span><span>${fmt(paidSum(p))}</span></div></div>
+ <div class="acts">${!p.voided?`<button class="btn danger" onclick="voidPurchase('${p.id}')">Void</button>`:''}<button class="btn" onclick="closeModal()">Close</button></div>`,true);
+}
+function voidPurchase(id){
+ const p=S.purchases.find(x=>x.id===id);
+ confirmBox('Void '+p.no+'? The items are taken back out of stock.',()=>{p.voided=true;p.items.forEach(i=>moveStock(i.pid,-i.qty,'purchaseVoid',p.no));commit();closeAll();render();toast(p.no+' voided.')},'Void it',true);
+}
+function paySupplierModal(id){
+ const p=S.purchases.find(x=>x.id===id),o=r2(p.total-paidSum(p));
+ modal(`<h3>Pay supplier</h3><p class="sub">${esc(p.no)} · ${esc(suppName(p.supplierId))} · owed ${money(o)}</p>
+ <div class="fg"><label class="f">Amount<input class="i" id="spAmt" type="number" step="any" value="${o}"></label><label class="f">Date<input class="i" id="spDate" type="date" value="${today()}"></label>
+ <label class="f">Method<select class="i" id="spMeth">${opt(METHODS,'M-Pesa')}</select></label><label class="f">Reference<input class="i" id="spRef"></label></div>
+ <div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="saveSupPay('${id}')">Save payment</button></div>`);
+}
+function saveSupPay(id){const p=S.purchases.find(x=>x.id===id),a=r2(num(val('spAmt')));if(a<=0){toast('Enter an amount.');return}
+ p.payments.push({id:uid(),date:val('spDate')||today(),amount:a,method:val('spMeth'),ref:val('spRef')});commit();closeAll();render();toast('Supplier payment saved.')}
+
+/* ================= EXPENSES ================= */
+let expMonth=today().slice(0,7);
+function vExpenses(){
+ const list=S.expenses.filter(e=>e.date.startsWith(expMonth)).sort((a,b)=>b.date.localeCompare(a.date));
+ const tot=list.reduce((a,e)=>a+num(e.amount),0),byC={};list.forEach(e=>byC[e.category]=(byC[e.category]||0)+num(e.amount));
+ return head('Expenses','Running costs of the shop. They come off your profit in Reports.',`<input class="i" type="month" style="width:auto" value="${expMonth}" onchange="expMonth=this.value;render()" aria-label="Month"><button class="btn pri" onclick="expenseModal()">Add expense</button>`)+
+ `<div class="grid g3" style="grid-template-columns:2fr 1fr"><div>${list.length?`<div class="tw"><table><thead><tr><th>Date</th><th>Category</th><th>Note</th><th>Paid by</th><th class="n">Amount</th><th></th></tr></thead><tbody>
+ ${list.map(e=>`<tr><td>${niceDate(e.date)}</td><td>${esc(e.category)}</td><td>${esc(e.note)}</td><td>${esc(e.method)}</td><td class="n">${fmt(e.amount)}</td><td class="n"><button class="btn sm" onclick="expenseModal('${e.id}')">Edit</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="panel empty">No expenses recorded for this month.</div>'}</div>
+ <div class="panel"><h3>${new Date(expMonth+'-15').toLocaleDateString('en-GB',{month:'long',year:'numeric'})}</h3><div class="tot g" style="padding-top:0"><span>Total</span><span>${money(tot)}</span></div>
+ ${Object.entries(byC).sort((a,b)=>b[1]-a[1]).map(([c,v])=>`<div style="margin-top:10px"><div class="row"><span class="grow">${esc(c)}</span><span>${fmt(v)}</span></div><div class="hbar"><i style="width:${v/tot*100}%"></i></div></div>`).join('')}</div></div>`;
+}
+function expenseModal(id){
+ const e=id?S.expenses.find(x=>x.id===id):{date:today(),category:S.expenseCats[0],amount:'',method:'Cash',note:''};
+ modal(`<h3>${id?'Edit expense':'Add expense'}</h3>
+ <div class="fg" style="margin-top:12px"><label class="f">Date<input class="i" id="eDate" type="date" value="${e.date}"></label>
+ <label class="f">Category<select class="i" id="eCat">${opt(S.expenseCats,e.category)}</select></label>
+ <label class="f">Amount<input class="i" id="eAmt" type="number" step="any" value="${e.amount}"></label>
+ <label class="f">Paid by<select class="i" id="eMeth">${opt(METHODS,e.method)}</select></label>
+ <label class="f full">Note<input class="i" id="eNote" value="${esc(e.note)}" placeholder="e.g. October rent"></label></div>
+ <div class="acts">${id?`<button class="btn danger" onclick="delExpense('${id}')">Delete</button><div class="grow"></div>`:''}<button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="saveExpense('${id||''}')">Save expense</button></div>`);
+}
+function saveExpense(id){
+ const d={date:val('eDate')||today(),category:val('eCat'),amount:r2(num(val('eAmt'))),method:val('eMeth'),note:val('eNote')};
+ if(d.amount<=0){toast('Enter the amount.');return}
+ if(id)Object.assign(S.expenses.find(x=>x.id===id),d);else S.expenses.push({id:uid(),...d});
+ commit();closeModal();render();toast('Expense saved.');
+}
+function delExpense(id){confirmBox('Delete this expense?',()=>{S.expenses=S.expenses.filter(x=>x.id!==id);commit();render();toast('Expense deleted.')},'Delete',true)}
+
+/* ================= CUSTOMERS & SUPPLIERS ================= */
+function vCustomers(){
+ const list=[...S.customers].sort((a,b)=>custBal(b.id)-custBal(a.id)||a.name.localeCompare(b.name));
+ const tot=S.customers.reduce((a,c)=>a+custBal(c.id),0);
+ return head('Customers','Regular customers and anyone buying on credit.',`<button class="btn pri" onclick="newCustomer(()=>render())">Add customer</button>`)+
+ `<p class="muted">Customers owe you ${money(tot)} in total.</p>
+ ${list.length?`<div class="tw"><table><thead><tr><th>Name</th><th>Phone</th><th class="n">Bought (all time)</th><th class="n">Owes</th><th></th></tr></thead><tbody>
+ ${list.map(c=>{const b=custBal(c.id),sp=S.sales.filter(s=>s.customerId===c.id&&!s.voided).reduce((a,s)=>a+s.total,0);return `<tr><td><b>${esc(c.name)}</b></td><td>${esc(c.phone)}</td><td class="n">${fmt(sp)}</td><td class="n ${b>0?'badc':''}">${fmt(b)}</td>
+ <td class="n"><button class="btn sm" onclick="statement('${c.id}')">Statement</button>${b>0?` <button class="btn sm pri" onclick="custPayModal('${c.id}')">Receive payment</button>`:''} <button class="btn sm ghost" onclick="newCustomer(()=>render(),'${c.id}')">Edit</button></td></tr>`}).join('')}</tbody></table></div>`:'<div class="panel empty">No customers yet. Walk-in sales don’t need one.</div>'}`;
+}
+function newCustomer(cb,id){
+ const c=id?S.customers.find(x=>x.id===id):{name:'',phone:'',email:'',notes:''};
+ window._custCb=cb;
+ modal(`<h3>${id?'Edit customer':'New customer'}</h3><div class="fg" style="margin-top:12px">
+ <label class="f full">Name<input class="i" id="cName" value="${esc(c.name)}"></label><label class="f">Phone<input class="i" id="cPhone" value="${esc(c.phone)}" placeholder="07…"></label>
+ <label class="f">Email<input class="i" id="cEmail" value="${esc(c.email)}"></label><label class="f full">Notes<input class="i" id="cNotes" value="${esc(c.notes)}"></label></div>
+ <div class="acts"><button class="btn" onclick="cancelNew()">Cancel</button><button class="btn pri" onclick="saveCustomer('${id||''}')">Save customer</button></div>`);
+}
+function saveCustomer(id){
+ const name=val('cName').trim();if(!name){toast('Enter the name.');return}
+ const d={name,phone:val('cPhone').trim(),email:val('cEmail').trim(),notes:val('cNotes')};
+ let cid=id;if(id)Object.assign(S.customers.find(x=>x.id===id),d);else{cid=uid();S.customers.push({id:cid,...d})}
+ commit();closeModal();const cb=window._custCb;window._custCb=null;cb&&cb(cid);toast('Customer saved.');
+}
+function statement(id){
+ const c=S.customers.find(x=>x.id===id),docs=S.sales.filter(s=>s.customerId===id).sort((a,b)=>a.date.localeCompare(b.date));
+ modal(`<h3>${esc(c.name)}</h3><p class="sub">${esc(c.phone)} · owes ${money(custBal(id))}</p>${salesTable(docs)}
+ <div class="acts"><button class="btn" onclick="printStatement('${id}')">Print statement</button><button class="btn" onclick="closeModal()">Close</button></div>`,true);
+}
+function custPayModal(id){
+ const c=S.customers.find(x=>x.id===id);
+ modal(`<h3>Receive payment</h3><p class="sub">${esc(c.name)} owes ${money(custBal(id))}. The payment clears the oldest invoices first.</p>
+ <div class="fg"><label class="f">Amount<input class="i" id="pAmt" type="number" step="any" value="${custBal(id)}"></label><label class="f">Date<input class="i" id="pDate" type="date" value="${today()}"></label>
+ <label class="f">Method<select class="i" id="pMeth">${opt(METHODS,'M-Pesa')}</select></label><label class="f">Reference / M-Pesa code<input class="i" id="pRef"></label></div>
+ <div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="saveCustPay('${id}')">Save payment</button></div>`);
+}
+function saveCustPay(id){
+ let a=r2(num(val('pAmt')));const total=custBal(id);if(a<=0){toast('Enter an amount.');return}if(a>total+0.004){toast('That is more than the '+money(total)+' owed.');return}
+ const amt=a;S.sales.filter(s=>s.customerId===id&&balOf(s)>0).sort((x,y)=>x.date.localeCompare(y.date)).forEach(s=>{if(a<=0)return;const p=Math.min(a,balOf(s));s.payments.push({id:uid(),date:val('pDate')||today(),amount:r2(p),method:val('pMeth'),ref:val('pRef')});a=r2(a-p)});
+ commit();closeModal();render();toast('Payment of '+money(amt)+' saved.');
+}
+function vSuppliers(){
+ const list=[...S.suppliers].sort((a,b)=>a.name.localeCompare(b.name));
+ return head('Suppliers','Where you buy stock.',`<button class="btn pri" onclick="newSupplier(()=>render())">Add supplier</button>`)+
+ (list.length?`<div class="tw"><table><thead><tr><th>Name</th><th>Phone</th><th>Notes</th><th class="n">Bought (all time)</th><th class="n">You owe</th><th></th></tr></thead><tbody>
+ ${list.map(s=>{const b=suppBal(s.id),t=S.purchases.filter(p=>p.supplierId===s.id&&!p.voided).reduce((a,p)=>a+p.total,0);return `<tr><td><b>${esc(s.name)}</b></td><td>${esc(s.phone)}</td><td>${esc(s.notes)}</td><td class="n">${fmt(t)}</td><td class="n ${b>0?'badc':''}">${fmt(b)}</td><td class="n"><button class="btn sm ghost" onclick="newSupplier(()=>render(),'${s.id}')">Edit</button></td></tr>`}).join('')}</tbody></table></div>`:'<div class="panel empty">No suppliers yet.</div>');
+}
+function newSupplier(cb,id){
+ const s=id?S.suppliers.find(x=>x.id===id):{name:'',phone:'',notes:''};window._supCb=cb;
+ modal(`<h3>${id?'Edit supplier':'New supplier'}</h3><div class="fg" style="margin-top:12px"><label class="f full">Name<input class="i" id="sName" value="${esc(s.name)}"></label>
+ <label class="f">Phone<input class="i" id="sPhone" value="${esc(s.phone)}"></label><label class="f">Notes<input class="i" id="sNotes" value="${esc(s.notes)}" placeholder="e.g. Nairobi CBD, delivers Tuesdays"></label></div>
+ <div class="acts"><button class="btn" onclick="cancelNew()">Cancel</button><button class="btn pri" onclick="saveSupplier('${id||''}')">Save supplier</button></div>`);
+}
+function saveSupplier(id){
+ const name=val('sName').trim();if(!name){toast('Enter the name.');return}
+ const d={name,phone:val('sPhone').trim(),notes:val('sNotes')};let sid=id;
+ if(id)Object.assign(S.suppliers.find(x=>x.id===id),d);else{sid=uid();S.suppliers.push({id:sid,...d})}
+ commit();closeModal();const cb=window._supCb;window._supCb=null;cb&&cb(sid);toast('Supplier saved.');
+}
+
+function cancelNew(){closeModal();window._custCb=null;window._supCb=null;
+ ['ivCust','puSup'].forEach(id=>{const e=document.getElementById(id);if(e&&e.value==='__new')e.value=''});
+ if(view==='sell')drawCart();}
+/* ================= REPORTS ================= */
+const rp={preset:'month',from:today().slice(0,8)+'01',to:today()};
+function setPreset(p){
+ const t=today(),d=new Date();rp.preset=p;
+ if(p==='today'){rp.from=rp.to=t}
+ else if(p==='week'){const w=(d.getDay()+6)%7;rp.from=addDays(t,-w);rp.to=t}
+ else if(p==='month'){rp.from=t.slice(0,8)+'01';rp.to=t}
+ else if(p==='last'){const f=new Date(d.getFullYear(),d.getMonth()-1,1),l=new Date(d.getFullYear(),d.getMonth(),0);rp.from=dISO(f);rp.to=dISO(l)}
+ else if(p==='year'){rp.from=t.slice(0,4)+'-01-01';rp.to=t}
+ render();
+}
+function vReports(){
+ const {from,to}=rp,sl=salesIn(from,to);
+ const gross=sl.reduce((a,s)=>a+s.subtotal,0),disc=sl.reduce((a,s)=>a+s.discount,0),net=gross-disc,cogs=sl.reduce((a,s)=>a+costOf(s),0),gp=net-cogs;
+ const ex=S.expenses.filter(e=>e.date>=from&&e.date<=to),exT=ex.reduce((a,e)=>a+num(e.amount),0),np=gp-exT;
+ const exC={};ex.forEach(e=>exC[e.category]=(exC[e.category]||0)+num(e.amount));
+ // money in / out by method
+ const mi={},mo={};METHODS.forEach(m=>{mi[m]=0;mo[m]=0});
+ S.sales.forEach(s=>!s.voided&&(s.payments||[]).forEach(p=>{if(p.date>=from&&p.date<=to)mi[p.method]=(mi[p.method]||0)+num(p.amount)}));
+ ex.forEach(e=>mo[e.method]=(mo[e.method]||0)+num(e.amount));
+ S.purchases.forEach(pu=>!pu.voided&&(pu.payments||[]).forEach(p=>{if(p.date>=from&&p.date<=to)mo[p.method]=(mo[p.method]||0)+num(p.amount)}));
+ // by category & product
+ const cat={},pr={};
+ sl.forEach(s=>s.items.forEach(i=>{const c=i.pid?(prod(i.pid)?.category||'Other'):'Other items',rev=i.qty*i.price,pf=rev-i.qty*num(i.cost);
+  cat[c]=cat[c]||{rev:0,pf:0,q:0};cat[c].rev+=rev;cat[c].pf+=pf;cat[c].q+=num(i.qty);
+  const k=i.pid||'x:'+i.name;pr[k]=pr[k]||{name:i.name,rev:0,pf:0,q:0};pr[k].rev+=rev;pr[k].pf+=pf;pr[k].q+=num(i.qty)}));
+ const catA=Object.entries(cat).sort((a,b)=>b[1].rev-a[1].rev),catMax=Math.max(1,...catA.map(x=>x[1].rev));
+ const top=Object.values(pr).sort((a,b)=>b.rev-a.rev).slice(0,15);
+ // daily
+ const days={};sl.forEach(s=>{days[s.date]=days[s.date]||{n:0,t:0,p:0};days[s.date].n++;days[s.date].t+=s.total;days[s.date].p+=s.total-costOf(s)});
+ const dA=Object.entries(days).sort((a,b)=>b[0].localeCompare(a[0]));
+ // stock & balances (current)
+ const sv={};S.products.filter(p=>p.active!==false).forEach(p=>{const c=p.category;sv[c]=sv[c]||{c:0,r:0,n:0};const q=Math.max(0,num(p.qty));sv[c].c+=q*num(p.cost);sv[c].r+=q*num(p.price);sv[c].n++});
+ const svT=Object.values(sv).reduce((a,x)=>({c:a.c+x.c,r:a.r+x.r}),{c:0,r:0});
+ const debt=S.customers.map(c=>[c,custBal(c.id)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
+ const cred=S.suppliers.map(s=>[s,suppBal(s.id)]).filter(x=>x[1]>0).sort((a,b)=>b[1]-a[1]);
+ const L=(a,b,cls='')=>`<div class="tot ${cls}"><span>${a}</span><span>${b}</span></div>`;
+ return head('Reports',`${niceDate(from)} to ${niceDate(to)}`,`<button class="btn" onclick="exportSalesCSV(true)">Export sales lines</button><button class="btn" onclick="printReport()">Print report</button>`)+
+ `<div class="row" style="margin-bottom:16px"><div class="chips">${[['today','Today'],['week','This week'],['month','This month'],['last','Last month'],['year','This year']].map(([k,l])=>`<button class="chip ${rp.preset===k?'on':''}" onclick="setPreset('${k}')">${l}</button>`).join('')}</div>
+ <div class="grow"></div><input class="i" type="date" style="width:auto" value="${from}" onchange="rp.from=this.value;rp.preset='';render()" aria-label="From"><span class="muted">to</span><input class="i" type="date" style="width:auto" value="${to}" onchange="rp.to=this.value;rp.preset='';render()" aria-label="To"></div>
+ <div id="repBody">
+ <div class="grid g4"><div class="stat"><span>Sales</span><strong>${money(net)}</strong><small>${sl.length} sales</small></div>
+ <div class="stat"><span>Gross profit</span><strong>${money(gp)}</strong><small>${net?(gp/net*100).toFixed(1):0}% margin</small></div>
+ <div class="stat"><span>Expenses</span><strong>${money(exT)}</strong><small>${ex.length} entr${ex.length===1?'y':'ies'}</small></div>
+ <div class="stat"><span>Net profit</span><strong class="${np<0?'badc':'okc'}">${money(np)}</strong><small>sales − cost − expenses</small></div></div>
+ <div class="grid g2" style="margin-top:16px">
+  <div class="panel"><h3>Profit and loss</h3>${L('Sales before discounts',fmt(gross))}${L('Discounts given',(disc?'−':'')+fmt(disc))}${L('<b>Net sales</b>','<b>'+fmt(net)+'</b>')}${L('Cost of goods sold','−'+fmt(cogs))}${L('<b>Gross profit</b>','<b>'+fmt(gp)+'</b>')}
+  ${Object.entries(exC).sort((a,b)=>b[1]-a[1]).map(([c,v])=>L('<span class="muted">'+esc(c)+'</span>','−'+fmt(v))).join('')}${L('Net profit',money(np),'g')}</div>
+  <div class="panel"><h3>Money in and out by method</h3><div class="tw"><table><thead><tr><th>Method</th><th class="n">Received</th><th class="n">Paid out</th><th class="n">Net</th></tr></thead><tbody>
+  ${METHODS.map(m=>`<tr><td>${m}</td><td class="n">${fmt(mi[m])}</td><td class="n">${fmt(mo[m])}</td><td class="n">${fmt(mi[m]-mo[m])}</td></tr>`).join('')}
+  <tr><td><b>Total</b></td><td class="n"><b>${fmt(Object.values(mi).reduce((a,b)=>a+b,0))}</b></td><td class="n"><b>${fmt(Object.values(mo).reduce((a,b)=>a+b,0))}</b></td><td class="n"><b>${fmt(Object.values(mi).reduce((a,b)=>a+b,0)-Object.values(mo).reduce((a,b)=>a+b,0))}</b></td></tr></tbody></table></div>
+  <p class="muted" style="font-size:13px;margin-bottom:0">Received includes payments on older invoices. Paid out is expenses plus supplier payments. Use the Cash row to check the drawer.</p></div>
+ </div>
+ <div class="panel" style="margin-top:16px"><h3>Sales by category</h3>${catA.length?catA.map(([c,v])=>`<div style="margin-bottom:10px"><div class="row"><b class="grow">${esc(c)}</b><span class="muted">${qf(v.q)} sold · profit ${fmt(v.pf)}</span><span style="min-width:110px;text-align:right">${fmt(v.rev)}</span></div><div class="hbar"><i style="width:${v.rev/catMax*100}%"></i></div></div>`).join(''):'<p class="muted">No sales in this period.</p>'}</div>
+ <div class="grid g2" style="margin-top:16px">
+  <div><h3 style="font-size:16px">Best-selling products</h3>${top.length?`<div class="tw"><table><thead><tr><th>Product</th><th class="n">Qty</th><th class="n">Sales</th><th class="n">Profit</th></tr></thead><tbody>${top.map(p=>`<tr><td>${esc(p.name)}</td><td class="n">${qf(p.q)}</td><td class="n">${fmt(p.rev)}</td><td class="n">${fmt(p.pf)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">No sales in this period.</p>'}</div>
+  <div><h3 style="font-size:16px">Day by day</h3>${dA.length?`<div class="tw" style="max-height:460px;overflow:auto"><table><thead><tr><th>Date</th><th class="n">Sales</th><th class="n">Amount</th><th class="n">Profit</th></tr></thead><tbody>${dA.map(([d,v])=>`<tr><td>${niceDate(d)}</td><td class="n">${v.n}</td><td class="n">${fmt(v.t)}</td><td class="n">${fmt(v.p)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="muted">No sales in this period.</p>'}</div>
+ </div>
+ <div class="grid g3" style="margin-top:16px">
+  <div class="panel"><h3>Stock on hand today</h3>${Object.entries(sv).map(([c,v])=>L(esc(c)+` <span class="muted">(${v.n})</span>`,fmt(v.c))).join('')}${L('Value at cost',money(svT.c),'g')}${L('Value at selling price',fmt(svT.r))}</div>
+  <div class="panel"><h3>Customers who owe</h3>${debt.length?debt.map(([c,b])=>L(esc(c.name),fmt(b))).join('')+L('Total',money(debt.reduce((a,x)=>a+x[1],0)),'g'):'<p class="muted">Nobody owes the shop.</p>'}</div>
+  <div class="panel"><h3>Suppliers you owe</h3>${cred.length?cred.map(([s,b])=>L(esc(s.name),fmt(b))).join('')+L('Total',money(cred.reduce((a,x)=>a+x[1],0)),'g'):'<p class="muted">You owe no supplier.</p>'}</div>
+ </div></div>`;
+}
+function exportSalesCSV(range){
+ const from=range?rp.from:sf.from,to=range?rp.to:sf.to;
+ const rows=[['Number','Type','Date','Time','Customer','Item','Category','Qty','Price','Amount','Unit cost','Profit','Sale discount','Sale total','Paid','Balance','Status']];
+ S.sales.filter(s=>s.date>=from&&s.date<=to).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).forEach(s=>s.items.forEach((i,k)=>rows.push([s.no,s.kind,s.date,s.time,custName(s.customerId),i.name,i.pid?(prod(i.pid)?.category||''):'Other items',i.qty,i.price,r2(i.qty*i.price),i.cost,r2(i.qty*(i.price-i.cost)),k?'':s.discount,k?'':s.total,k?'':paidOf(s),k?'':balOf(s),statusOf(s)[0]])));
+ downloadCSV('sales_'+from+'_to_'+to+'.csv',rows);
+}
+
+/* ================= PRINTING ================= */
+function shopHead(center){const st=S.settings;return `<div style="text-align:${center?'center':'left'}"><div style="font-size:${center?'16px':'22px'};font-weight:700">${esc(st.shopName)}</div><div>${esc(st.location)}${st.phone?' · Tel '+esc(st.phone):''}</div>${st.email?`<div>${esc(st.email)}</div>`:''}${st.kraPin?`<div>KRA PIN: ${esc(st.kraPin)}</div>`:''}</div>`}
+function doPrint(html,cls){const p=$('#print');p.className=cls;p.innerHTML=html;setTimeout(()=>window.print(),60)}
+function printDoc(id,format){
+ const s=S.sales.find(x=>x.id===id),st=S.settings,title=s.kind==='invoice'?'INVOICE':'RECEIPT',bal=balOf(s);
+ if(format==='receipt'){
+  doPrint(`${shopHead(true)}<hr><div><b>${title} ${esc(s.no)}</b>${s.voided?' (VOIDED)':''}<br>${niceDate(s.date)} ${s.time||''}<br>${esc(custName(s.customerId))}</div><hr>
+  <table style="width:100%">${s.items.map(i=>`<tr><td colspan="2">${esc(i.name)}</td></tr><tr><td>${qf(i.qty)} × ${fmt(i.price)}</td><td style="text-align:right">${fmt(i.qty*i.price)}</td></tr>`).join('')}</table><hr>
+  <table style="width:100%">${s.discount?`<tr><td>Subtotal</td><td style="text-align:right">${fmt(s.subtotal)}</td></tr><tr><td>Discount</td><td style="text-align:right">-${fmt(s.discount)}</td></tr>`:''}
+  <tr><td><b>TOTAL</b></td><td style="text-align:right"><b>${money(s.total)}</b></td></tr>${(s.payments||[]).map(p=>`<tr><td>${esc(p.method)}${p.ref?' '+esc(p.ref):''}</td><td style="text-align:right">${fmt(p.amount)}</td></tr>`).join('')}
+  ${bal>0?`<tr><td><b>BALANCE</b></td><td style="text-align:right"><b>${fmt(bal)}</b></td></tr>`:''}</table><hr><div style="text-align:center">${esc(st.receiptFooter)}</div>`,'receipt');
+ } else {
+  doPrint(`<div style="display:flex;justify-content:space-between;align-items:flex-start">${shopHead()}<div style="text-align:right"><div style="font-size:26px;font-weight:700;letter-spacing:.05em">${title}</div><div><b>${esc(s.no)}</b>${s.voided?' — VOIDED':''}</div><div>Date: ${niceDate(s.date)}</div>${s.dueDate?`<div>Due: ${niceDate(s.dueDate)}</div>`:''}</div></div>
+  <div style="margin:22px 0 12px"><div style="color:#555">Bill to</div><b>${esc(custName(s.customerId))}</b>${(()=>{const c=S.customers.find(x=>x.id===s.customerId);return c&&c.phone?'<br>'+esc(c.phone):''})()}</div>
+  <table style="width:100%;border-collapse:collapse"><thead><tr><th style="border-bottom:2px solid #000;text-align:left">Item</th><th style="border-bottom:2px solid #000;text-align:right">Qty</th><th style="border-bottom:2px solid #000;text-align:right">Price</th><th style="border-bottom:2px solid #000;text-align:right">Amount</th></tr></thead><tbody>
+  ${s.items.map(i=>`<tr><td style="border-bottom:1px solid #ccc">${esc(i.name)}</td><td style="border-bottom:1px solid #ccc;text-align:right">${qf(i.qty)}</td><td style="border-bottom:1px solid #ccc;text-align:right">${fmt(i.price)}</td><td style="border-bottom:1px solid #ccc;text-align:right">${fmt(i.qty*i.price)}</td></tr>`).join('')}</tbody></table>
+  <table style="margin:12px 0 0 auto;min-width:260px">${s.discount?`<tr><td>Subtotal</td><td style="text-align:right">${fmt(s.subtotal)}</td></tr><tr><td>Discount</td><td style="text-align:right">-${fmt(s.discount)}</td></tr>`:''}
+  <tr><td><b>Total</b></td><td style="text-align:right"><b>${money(s.total)}</b></td></tr><tr><td>Paid</td><td style="text-align:right">${fmt(paidOf(s))}</td></tr><tr><td><b>Balance due</b></td><td style="text-align:right"><b>${money(bal)}</b></td></tr></table>
+  ${s.notes?`<p>${esc(s.notes)}</p>`:''}${s.kind==='invoice'&&st.invoiceTerms?`<p style="margin-top:24px;color:#444">${esc(st.invoiceTerms)}</p>`:''}<p style="margin-top:24px;text-align:center">${esc(st.receiptFooter)}</p>`,'a4');
+ }
+}
+function printStatement(id){
+ const c=S.customers.find(x=>x.id===id),docs=S.sales.filter(s=>s.customerId===id&&!s.voided).sort((a,b)=>a.date.localeCompare(b.date));
+ doPrint(`${shopHead()}<h2 style="margin:20px 0 4px">Statement — ${esc(c.name)}</h2><div>Printed ${niceDate(today())}</div>
+ <table style="width:100%;border-collapse:collapse;margin-top:14px"><thead><tr><th style="text-align:left;border-bottom:2px solid #000">Date</th><th style="text-align:left;border-bottom:2px solid #000">Number</th><th style="text-align:right;border-bottom:2px solid #000">Total</th><th style="text-align:right;border-bottom:2px solid #000">Paid</th><th style="text-align:right;border-bottom:2px solid #000">Balance</th></tr></thead><tbody>
+ ${docs.map(s=>`<tr><td>${niceDate(s.date)}</td><td>${esc(s.no)}</td><td style="text-align:right">${fmt(s.total)}</td><td style="text-align:right">${fmt(paidOf(s))}</td><td style="text-align:right">${fmt(balOf(s))}</td></tr>`).join('')}</tbody></table>
+ <p style="text-align:right;font-size:16px"><b>Amount owed: ${money(custBal(id))}</b></p>`,'a4');
+}
+function printReport(){doPrint(`${shopHead()}<h2 style="margin:16px 0 2px">Business report</h2><div>${niceDate(rp.from)} to ${niceDate(rp.to)}</div><div style="margin-top:12px">${$('#repBody').innerHTML}</div>`,'a4')}
+
+/* ================= SETTINGS & BACKUP ================= */
+const SQL=`-- Run once in Supabase: SQL Editor > New query > Run
+create table if not exists shop_data (
+  id text primary key,
+  rev integer not null default 0,
+  data jsonb not null,
+  updated_at timestamptz not null default now()
+);
+create table if not exists shop_snapshots (
+  id text primary key,
+  shop_id text not null,
+  day date not null,
+  data jsonb not null,
+  created_at timestamptz not null default now()
+);
+alter table shop_data enable row level security;
+alter table shop_snapshots enable row level security;
+create policy "shop app access" on shop_data
+  for all to anon using (true) with check (true);
+create policy "shop app access" on shop_snapshots
+  for all to anon using (true) with check (true);`;
+function vSettings(){
+ const st=S.settings,used=(new Blob([localStorage.getItem(KEY)||'']).size/1024/1024);
+ return head('Settings & backup','Shop details, cloud sync and backups.')+
+ `<div class="grid g2">
+ <div class="panel"><h3>Shop details</h3><p class="muted" style="margin-top:-6px">Printed on receipts and invoices.</p><div class="fg">
+  <label class="f full">Shop name<input class="i" id="stName" value="${esc(st.shopName)}"></label>
+  <label class="f">Location<input class="i" id="stLoc" value="${esc(st.location)}"></label><label class="f">Phone<input class="i" id="stPhone" value="${esc(st.phone)}"></label>
+  <label class="f">Email<input class="i" id="stEmail" value="${esc(st.email)}"></label><label class="f">KRA PIN<input class="i" id="stKra" value="${esc(st.kraPin)}"></label>
+  <label class="f full">Message at the bottom of receipts<input class="i" id="stFoot" value="${esc(st.receiptFooter)}"></label>
+  <label class="f full">Invoice payment terms<input class="i" id="stTerms" value="${esc(st.invoiceTerms)}"></label>
+  <label class="f">Product categories (one per line)<textarea class="i" id="stCats" rows="6">${esc(S.categories.join('\n'))}</textarea></label>
+  <label class="f">Expense categories (one per line)<textarea class="i" id="stECats" rows="6">${esc(S.expenseCats.join('\n'))}</textarea></label>
+  <label class="f">Save to this computer every<select class="i" id="stAuto">${opt([[1,'1 minute'],[2,'2 minutes'],[5,'5 minutes'],[10,'10 minutes']],st.autosaveMin)}</select></label>
+  <label class="f">Selling more than stock shows<select class="i" id="stNeg">${opt([['1','Allow, after a warning'],['0','Block the sale']],st.allowNegative?'1':'0')}</select></label>
+ </div><p class="muted" style="font-size:13px">Every change is also saved the moment you make it — the timer is an extra safety net.</p>
+ <div class="acts"><button class="btn pri" onclick="saveSettings()">Save settings</button></div></div>
+
+ <div class="panel"><h3>Cloud sync (Supabase)</h3><p class="muted" style="margin-top:-6px">Keeps a copy online so records survive a broken or stolen computer, and lets a second computer use the same records.</p>
+  ${cloud.lastError?`<div class="alert bad">${esc(cloud.lastError)}</div>`:cloudOn()&&cloud.lastSync?`<div class="alert ok">Last synced ${ago(cloud.lastSync)}.</div>`:''}
+  <div class="fg"><label class="f full">Project URL<input class="i" id="cbUrl" value="${esc(cloud.url)}" placeholder="https://xxxx.supabase.co"></label>
+  <label class="f full">Publishable / anon key<input class="i" id="cbKey" type="password" value="${esc(cloud.key)}" placeholder="sb_publishable_… or eyJ…"></label>
+  <label class="f">Shop ID<input class="i" id="cbId" value="${esc(cloud.shopId)}"></label>
+  <label class="f">Sync every<select class="i" id="cbEvery">${opt([[1,'1 minute'],[2,'2 minutes'],[5,'5 minutes'],[10,'10 minutes'],[15,'15 minutes']],cloud.everyMin)}</select></label>
+  <label class="row full" style="gap:8px"><input type="checkbox" id="cbAuto" ${cloud.auto?'checked':''}> Sync automatically</label></div>
+  <div class="acts" style="justify-content:flex-start"><button class="btn pri" onclick="saveCloud()">Save and sync now</button><button class="btn" onclick="saveCloudOnly();testCloud()">Test connection</button><button class="btn" onclick="pullCloud()">Load records from cloud</button><button class="btn" onclick="showSnapshots()">Restore a snapshot</button></div>
+  <details style="margin-top:14px"><summary style="cursor:pointer;font-weight:600">First-time setup</summary>
+  <p class="muted" style="font-size:13.5px">1. Create a free project at supabase.com. 2. Open SQL Editor, paste the code below and press Run. 3. In Project Settings → API copy the Project URL and the anon public key into the boxes above. 4. Use the same Shop ID on every computer that should share records.</p>
+  <pre class="code">${esc(SQL)}</pre><button class="btn sm" onclick="navigator.clipboard.writeText(SQL).then(()=>toast('SQL copied.'))">Copy SQL</button></details>
+ </div>
+
+ <div class="panel"><h3>Backup file</h3><p class="muted" style="margin-top:-6px">Download a full copy to a flash disk or email it to yourself every week.</p>
+  <div class="row"><button class="btn pri" onclick="exportBackup()">Download backup</button><label class="btn">Restore from backup file<input type="file" accept=".json" hidden onchange="importBackup(this.files[0])"></label></div>
+  <p class="muted" style="font-size:13px">Records use ${used.toFixed(2)} MB of about 5 MB available on this computer.${used>3.5?' <b class="warnc">Getting full — keep cloud sync on and download backups.</b>':''}</p>
+  ${S.meta.lastBackup?`<p class="muted" style="font-size:13px">Last backup downloaded ${niceDate(S.meta.lastBackup)}.</p>`:''}</div>
+
+ <div class="panel"><h3>Erase this computer</h3><p class="muted" style="margin-top:-6px">Removes all records from this computer only. The cloud copy and backup files are not touched.</p>
+  <button class="btn danger" onclick="eraseLocal()">Erase records on this computer</button></div>
+ </div>`;
+}
+function saveSettings(){
+ const st=S.settings,lines=id=>val(id).split('\n').map(x=>x.trim()).filter(Boolean);
+ Object.assign(st,{shopName:val('stName').trim()||'Naomi Beauty Shop',location:val('stLoc').trim(),phone:val('stPhone').trim(),email:val('stEmail').trim(),kraPin:val('stKra').trim(),
+  receiptFooter:val('stFoot'),invoiceTerms:val('stTerms'),autosaveMin:num(val('stAuto'))||5,allowNegative:val('stNeg')==='1'});
+ const c=lines('stCats'),e=lines('stECats');if(c.length)S.categories=c;if(e.length)S.expenseCats=e;
+ commit();startTimers();render();toast('Settings saved.');
+}
+function saveCloudOnly(){Object.assign(cloud,{url:val('cbUrl').trim(),key:val('cbKey').trim()});saveLocal(true)}
+function saveCloud(){
+ const changedId=val('cbId').trim()!==cloud.shopId;
+ Object.assign(cloud,{url:val('cbUrl').trim(),key:val('cbKey').trim(),shopId:val('cbId').trim()||'naomi-beauty-githiga',auto:$('#cbAuto').checked,everyMin:num(val('cbEvery'))||5});
+ if(changedId)cloud.syncedRev=0;
+ saveLocal(true);startTimers();syncCloud(true).then(render);
+}
+function pullCloud(){
+ if(!cloudOn()){toast('Add your Supabase details first.');return}
+ confirmBox('Replace the records on this computer with the cloud copy? This computer’s current records are saved as a cloud snapshot first.',async()=>{
+  try{const remote=await cloudGet();if(!remote){toast('There is no cloud copy yet.');return}
+   await snapshot(S,'replaced_'+Date.now());applyRemote(remote);toast('Loaded records from the cloud.')}catch(e){toast('Could not load: '+e.message,5000)}
+ },'Load cloud copy');
+}
+async function showSnapshots(){
+ if(!cloudOn()){toast('Add your Supabase details first.');return}
+ try{
+  const r=await sb('shop_snapshots?shop_id=eq.'+encodeURIComponent(cloud.shopId)+'&select=id,day,created_at&order=created_at.desc&limit=40');const a=await r.json();
+  modal(`<h3>Restore a snapshot</h3><p class="sub">One snapshot is kept per day, plus a copy whenever records were replaced.</p>
+  ${a.length?a.map(x=>`<div class="list-line"><span>${niceDate(x.day)} <span class="muted">${x.id.includes('replaced_')?'· copy before replacing':'· end of day'} · ${new Date(x.created_at).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</span></span><button class="btn sm" onclick="restoreSnap('${esc(x.id)}')">Restore</button></div>`).join(''):'<p class="muted">No snapshots yet.</p>'}
+  <div class="acts"><button class="btn" onclick="closeModal()">Close</button></div>`);
+ }catch(e){toast('Could not load snapshots: '+e.message,5000)}
+}
+function restoreSnap(id){
+ confirmBox('Restore this snapshot? Current records are kept as another snapshot first.',async()=>{
+  try{const r=await sb('shop_snapshots?id=eq.'+encodeURIComponent(id)+'&select=data');const a=await r.json();if(!a[0])return;
+   await snapshot(S,'replaced_'+Date.now());S=a[0].data;loadFix();closeAll();commit();render();toast('Snapshot restored.')}catch(e){toast('Restore failed: '+e.message,5000)}
+ },'Restore');
+}
+function exportBackup(){
+ S.meta.lastBackup=today();saveLocal(true);
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:'application/json'}));
+ a.download=S.settings.shopName.replace(/\W+/g,'_')+'_backup_'+today()+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+function importBackup(f){
+ if(!f)return;f.text().then(t=>{let d;try{d=JSON.parse(t)}catch(e){toast('That file is not a backup from this app.');return}
+  if(!d.products||!d.sales){toast('That file is not a backup from this app.');return}
+  confirmBox(`Replace all records on this computer with the backup (${d.sales.length} sales, ${d.products.length} products)?`,()=>{S=d;loadFix();commit();render();toast('Backup restored.')},'Restore backup');
+ });
+}
+function eraseLocal(){
+ modal(`<h3>Erase records on this computer?</h3><p class="sub">Type ERASE to confirm. Download a backup first if you are unsure.</p><input class="i" id="erTxt">
+ <div class="acts"><button class="btn" onclick="closeModal()">Cancel</button><button class="btn pri" onclick="if(val('erTxt')==='ERASE'){localStorage.removeItem(KEY);cloud.syncedRev=0;cloud.dirty=false;S=blank();saveLocal(true);closeModal();go('dash');toast('Records erased from this computer.')}else toast('Type ERASE in capitals.')">Erase</button></div>`);
+}
+
+/* ================= START ================= */
+let tLocal,tCloud;
+function startTimers(){
+ clearInterval(tLocal);clearInterval(tCloud);
+ tLocal=setInterval(()=>saveLocal(true),(S.settings.autosaveMin||5)*60000);
+ tCloud=setInterval(()=>{if(cloudOn()&&cloud.auto)syncCloud(false)},(cloud.everyMin||5)*60000);
+}
+window.addEventListener('beforeunload',()=>saveLocal(true));
+document.addEventListener('visibilitychange',()=>{if(document.hidden)saveLocal(true)});
+window.addEventListener('online',()=>{cloud.lastError='';if(cloudOn()&&cloud.auto)syncCloud(false)});
+window.addEventListener('storage',e=>{if(e.key===KEY&&e.newValue){loadLocal();render();toast('Records were changed in another window — showing the latest.')}});
+document.addEventListener('keydown',e=>{
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'){e.preventDefault();saveLocal();if(cloudOn())syncCloud(false);toast('Saved. Everything also saves by itself — no need to press save.')}
+ if(e.key==='Escape'&&$('#modalRoot').children.length)closeModal();
+});
+setInterval(renderSaveBox,30000);
+loadLocal();render();startTimers();saveLocal(true);
+if(cloudOn()&&cloud.auto)setTimeout(()=>syncCloud(false),1200);
+</script>
+</body>
+</html>
